@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,4 +30,9 @@ public class User {
 	/** アカウント有効 **/
 	@Column(name = "is_account_enabled")
 	private boolean isAccountEnabled;
+	
+	/** 最終ログイン日時 **/
+	@Column(name = "last_login_date")
+	private LocalDateTime lastLoginDate;
+	
 }

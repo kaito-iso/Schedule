@@ -8,12 +8,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * アプリケーション全体のセキュリティ設定を定義するクラス
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+	private final LoginSuccessHandler loginSuccessHandler;
 
 	/**
 	 * HTTPリクエストに対するセキュリティフィルターを定義
@@ -24,14 +29,14 @@ public class SecurityConfig {
 				// アクセス認可の設定
 				.authorizeHttpRequests(authz -> authz
 						// ログイン前でもアクセスを許可
-						.requestMatchers("/login", "/css/**").permitAll()
+						.requestMatchers("/login", "/css/**", "/js/**").permitAll()
 						// 上記以外は、ログインしないとアクセス不可
 						.anyRequest().authenticated())
 				// ログイン機能の設定
 				.formLogin(form -> form
 						.loginPage("/login") // ログインページ（HTML）のURL
-						.loginProcessingUrl("/login") // フォームの送信先UR
-						.defaultSuccessUrl("/menu", true) // ログイン成功時のリダイレクト先
+						//.defaultSuccessUrl("/menu", true) // ログイン成功時のリダイレクト先
+						.successHandler(loginSuccessHandler) // 自作処理
 						.usernameParameter("userId") // HTMLのth:fieldと一致
 						.passwordParameter("password") //HTMLのth:fieldと一致
 						.permitAll())

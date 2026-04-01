@@ -19,5 +19,5 @@ CREATE TABLE m_user (
 --,	resignation_date  DATE
 --,	add_date          DATETIME      NOT NULL
 --,	upd_date          DATETIME      NOT NULL
---,	last_login_date 	DATETIME 
+,	last_login_date   TIMESTAMP 
 );
