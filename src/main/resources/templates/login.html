@@ -1,12 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
-	<title>Login</title>
+	<title>Schedule - Login</title>
+
+	<!-- Tailwind CSS 読み込み-->
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	<!-- Tailwind CSS カスタマイズ記述 -->
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						brand: {
+							light: '#4fd1c5', 	// brand-light という名前でこの色を定義
+							DEFAULT: '#4169e1', // brand という名前でこの色を定義
+							dark: '#000080', 	// brand-dark という名前でこの色を定義
+						}
+					}
+				}
+			}
+		}
+	</script>
 </head>
 
-<body>
+<!-- 画面全体のレイアウト -->
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+	<div
+		class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md transformed transition-all duration-300 hover:shadow-2xl">
+
+		<!-- ロゴとタイトル -->
+		<div class="text-center mb-10">
+			<div class="inline-flex items-center justify-center w-16 h-16 bg-brand-light/20 rounded-full mb-4">
+				<svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z">
+					</path>
+				</svg>
+			</div>
+			<h1 class="text-3xl font-bold text-gray-800 tracking-tight">SCHEDULE</h1>
+			<p class="text-gray-500 mt-2">アカウントにログインしてください</p>
+		</div>
+
+		<form th:action="@{/login}" method="post" th:object="${loginForm}" class="space-y-6">
+
+			<!-- ユーザーID -->
+			<div class="relative">
+				<label class="text-sm font-medium text-gray-700 block mb-1.5" for="userId">ユーザーID</label>
+				<div class="relative">
+					<span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+						</svg>
+					</span>
+					<input type="text" th:field="*{userId}" placeholder="IDを入力..."
+						class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light focus:border-brand transition duration-150">
+				</div>
+			</div>
+
+			<!-- パスワード -->
+			<div class="relative">
+				<label class="text-sm font-medium text-gray-700 block mb-1.5" for="password">パスワード</label>
+				<div class="relative">
+					<span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+							</path>
+						</svg>
+					</span>
+					<input type="password" th:field="*{password}" placeholder="••••••••"
+						class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light focus:border-brand transition duration-150">
+				</div>
+			</div>
+
+			<div>
+				<input type="submit" value="ログイン"
+					class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-150 cursor-pointer transform hover:-translate-y-0.5">
+			</div>
+		</form>
+	</div>
 
 </body>
 
