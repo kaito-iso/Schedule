@@ -1,12 +1,17 @@
 package com.example.demo.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Holiday;
 import com.example.demo.form.HolidayForm;
@@ -37,8 +42,29 @@ public class HolidayController {
 	}
 
 	@PostMapping("/holiday/create")
-	public String createHolidayFormP(Model model) {
+	public String createHolidayForm(@Validated @ModelAttribute HolidayForm form,
+			BindingResult bindingResult,
+			Model model,
+			Principal principal,
+			RedirectAttributes redirectAttributes) {
+
+		// バリデーションチェック
+		if (bindingResult.hasErrors()) {
+			return "admin_holiday_form";
+		}
+
+		// 重複チェック
+		if (service.existsById(form.getHolidayDate())) {
+			bindingResult.rejectValue("holidayDate", "error.duplicate", "この日付は既に登録されています");
+			return "admin_holiday_form";
+		}
+
+		// 保存
+		service.save(form);
+
 		model.addAttribute("holidayForm", new HolidayForm());
-		return "admin_holiday_form";
+
+		redirectAttributes.addFlashAttribute("successMessage", "「" + form.getHolidayName() + "」を登録しました");
+		return "redirect:/admin/holiday/create";
 	}
 }
