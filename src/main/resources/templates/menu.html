@@ -38,8 +38,20 @@
 						</svg>
 					</button>
 
+
 					<div
 						class="absolute right-0 mt-0 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden group-hover:block">
+
+						<div sec:authorize="hasRole('ADMIN')"
+							class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
+							管理者メニュー
+						</div>
+
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/setting}"
+							class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition">
+							システム設定
+						</a>
+
 						<div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
 							個人設定
 						</div>

@@ -30,6 +30,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authz -> authz
 						// ログイン前でもアクセスを許可
 						.requestMatchers("/login", "/css/**", "/js/**").permitAll()
+						// 権限が管理者だけがアクセス許可
+						.requestMatchers("/admin/**").hasRole("ADMIN")
 						// 上記以外は、ログインしないとアクセス不可
 						.anyRequest().authenticated())
 				// ログイン機能の設定
