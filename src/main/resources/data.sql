@@ -5,6 +5,21 @@ INSERT INTO m_user (
 , 	password
 ,	role
 ,	is_account_enabled
+,	last_name
+,	middle_name
+,	first_name
+,	last_name_kana
+,	middle_name_kana
+,	first_name_kana
+,	mail
+,	job_post_cd
+,	extension_tel
+,	mobile_tel
+,	birthday
+, 	gender
+,	hire_date
+,	add_date
+,	upd_date
 ,	last_login_date
 )
 VALUES (
@@ -12,5 +27,20 @@ VALUES (
 ,	'$2a$10$uQOAxGqDZ05J56SrBzyld.S2mWNBFJHmgesf.JRIAPktylbn2WgB.'
 ,	'ROLE_ADMIN'
 ,	true
+,	'苗字'
+,	null
+,	'名前'
+,	'ミョウジ'
+,	null
+,	'ナマエ'
+,	'test@gmail.com'
+,	'001'
+,	'725'
+,	'090-1234-5678'
+,	'2000-01-01'
+,	'M'
+,	'2020-01-01'
+,	'2025-01-01'
+,	'2025-01-01'
 ,	null
 );
