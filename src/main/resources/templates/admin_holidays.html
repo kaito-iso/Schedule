@@ -103,11 +103,11 @@
 
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
 								<div class="flex items-center justify-center gap-4">
-									<form th:action="@{/admin/holidays/delete}" method="post" class="inline">
-										<input type="hidden" name="holidayDate" th:value="${holiday.holidayDate}">
+									<form th:action="@{/admin/holiday/delete/{date}(date=${holiday.holidayDate})}"
+										method="post">
 										<button type="submit"
-											class="text-red-400 hover:text-red-600 transition p-1 rounded-md hover:bg-red-50"
-											onclick="return confirm('この祝日を削除しますか？');">
+											class="text-red-400 hover:text-red-600 transition p-1 rounded-md hover:bg-red-50 focus:outline-none"
+											onclick="return confirm('本当に削除しますか？')">
 											<svg class="w-5 h-5 inline" fill="none" stroke="currentColor"
 												viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

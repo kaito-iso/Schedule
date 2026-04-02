@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -66,5 +68,14 @@ public class HolidayController {
 
 		redirectAttributes.addFlashAttribute("successMessage", "「" + form.getHolidayName() + "」を登録しました");
 		return "redirect:/admin/holiday/create";
+	}
+
+	@PostMapping("/holiday/delete/{holidayDate}")
+	public String deleteHoliday(@PathVariable("holidayDate") LocalDate date, RedirectAttributes redirectAttributes) {
+
+		service.holidayDelete(date);
+
+		redirectAttributes.addFlashAttribute("successMessage", date + " の祝日を削除しました");
+		return "redirect:/admin/holidays";
 	}
 }

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class HolidayService {
 		return repository.findByIsDeletedOrderByHolidayDateAsc(false);
 	}
 
+	public Optional<Holiday> findById(LocalDate holiday) {
+		return repository.findById(holiday);
+	}
+
 	public boolean existsById(LocalDate holiday) {
 		return repository.existsById(holiday);
 	}
@@ -34,6 +39,18 @@ public class HolidayService {
 		holi.setDeleted(false);
 
 		repository.save(holi);
+	}
+
+	public boolean holidayDelete(LocalDate holidayDate) {
+
+		Optional<Holiday> optHoliday = findById(holidayDate);
+
+		if (optHoliday.get().getCreateType().equals("api")) {
+			System.out.println("api");
+		} else {
+			System.out.println("man");
+		}
+		return true;
 	}
 
 }
