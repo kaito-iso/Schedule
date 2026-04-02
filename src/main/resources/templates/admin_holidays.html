@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras-spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Admin - Holiday Management</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		.custom-scrollbar::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar-thumb {
+			background: #cbd5e1;
+			border-radius: 10px;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+			background: #94a3b8;
+		}
+
+		.sticky-header th {
+			position: sticky;
+			top: 0;
+			z-index: 10;
+			background-color: #f8fafc;
+			box-shadow: 0 1px 0 0 #e5e7eb;
+		}
+	</style>
+</head>
+
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden">
+	<div th:replace="~{common/layout :: header}"></div>
+
+	<main class="flex-1 max-w-6xl mx-auto w-full py-6 px-4 sm:px-6 lg:px-8 flex flex-col overflow-hidden">
+
+		<div class="flex-none">
+			<div class="mb-4 flex items-center gap-2 text-sm text-gray-400">
+				<a th:href="@{/menu}" class="hover:text-teal-600 transition">メニュー</a>
+				<span>/</span>
+				<a th:href="@{/admin/setting}" class="hover:text-teal-600 transition">システム設定</a>
+				<span>/</span>
+				<span class="text-gray-900 font-medium">祝日マスタ</span>
+			</div>
+
+			<div class="sm:flex sm:items-center sm:justify-between mb-6">
+				<div>
+					<h1 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+						<span class="p-2 bg-red-50 text-red-600 rounded-lg shadow-sm">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+								</path>
+							</svg>
+						</span>
+						祝日マスタ管理
+					</h1>
+				</div>
+				<div class="mt-4 sm:mt-0">
+					<a th:href="@{/admin/holiday/create}"
+						class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-lg shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all">
+						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 4v8m0 0v8m0-8h8m-8 0H4"></path>
+						</svg>
+						新規祝日を登録
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex-1 bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden flex flex-col min-h-0">
+			<div class="flex-1 overflow-y-auto custom-scrollbar min-h-0">
+
+				<table class="min-w-full divide-y divide-gray-200 table-fixed">
+					<thead class="sticky-header">
+						<tr>
+							<th scope="col"
+								class="w-[40%] px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+								日付</th>
+							<th scope="col"
+								class="w-[30%] px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+								祝日名</th>
+							<th scope="col"
+								class="w-[30%] px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+								操作</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-100">
+						<tr th:each="holiday : ${holidays}" class="hover:bg-teal-50/40 transition">
+							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 font-mono text-center"
+								th:text="${#temporals.format(holiday.holidayDate, 'yyyy/MM/dd (E)')}"></td>
+
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
+								<span
+									class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-100"
+									th:text="${holiday.holidayName}"></span>
+							</td>
+
+							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+								<div class="flex items-center justify-center gap-4">
+									<form th:action="@{/admin/holidays/delete}" method="post" class="inline">
+										<input type="hidden" name="holidayDate" th:value="${holiday.holidayDate}">
+										<button type="submit"
+											class="text-red-400 hover:text-red-600 transition p-1 rounded-md hover:bg-red-50"
+											onclick="return confirm('この祝日を削除しますか？');">
+											<svg class="w-5 h-5 inline" fill="none" stroke="currentColor"
+												viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+												</path>
+											</svg>
+										</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="flex-none py-4 flex justify-between items-center border-t border-transparent">
+			<p class="text-[10px] text-gray-400 italic">System Ref: HOLIDAY_MASTER_v2.0</p>
+			<div class="text-right">
+				<p
+					class="text-xs text-gray-500 font-medium bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm inline-flex items-center">
+					<span class="flex h-2 w-2 mr-2">
+						<span
+							class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-teal-400 opacity-75"></span>
+						<span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+					</span>
+					※ 祝日データはシステム全体に即時反映されます。
+				</p>
+			</div>
+		</div>
+
+	</main>
+</body>
+
+</html>

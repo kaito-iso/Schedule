@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS m_user;
+DROP TABLE IF EXISTS m_holiday;
 
 CREATE TABLE m_user (
   	user_id          	VARCHAR(32)   PRIMARY KEY
@@ -21,4 +22,11 @@ CREATE TABLE m_user (
 ,	add_date          	TIMESTAMP     NOT NULL
 ,	upd_date          	TIMESTAMP     NOT NULL
 ,	last_login_date   	TIMESTAMP 
+);
+
+CREATE TABLE m_holiday(
+	holiday_date		DATE		  PRIMARY KEY
+,	holiday_name		VARCHAR(30)   NOT NULL
+,	create_type			VARCHAR(3)	  NOT NULL
+,	is_deleted			BOOLEAN		  NOT NULL
 );

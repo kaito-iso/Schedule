@@ -8,70 +8,12 @@
 </head>
 
 <body class="bg-gray-50">
+	<div th:replace="~{common/layout :: header}"></div>
 
-	<nav class="bg-white shadow-sm border-b border-gray-200">
-		<div class="w-full px-4 sm:px-6 lg:px-8">
-			<div class="flex justify-between h-16 items-center">
-
-				<div class="flex-shrink-0 flex items-center">
-					<span class="text-xl font-bold text-teal-600">Schedule App</span>
-				</div>
-
-				<div class="relative group ml-auto">
-					<button type="button"
-						class="flex items-center gap-3 p-1.5 rounded-full hover:bg-gray-100 border border-gray-200 bg-gray-50 transition focus:outline-none">
-
-						<div
-							class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-teal-50">
-							<svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-								</path>
-							</svg>
-						</div>
-
-						<span class="text-sm font-medium text-gray-700" sec:authentication="name">ユーザー名</span>
-
-						<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-							</path>
-						</svg>
-					</button>
-
-
-					<div
-						class="absolute right-0 mt-0 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden group-hover:block">
-
-						<div sec:authorize="hasRole('ADMIN')"
-							class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
-							管理者メニュー
-						</div>
-
-						<a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/setting}"
-							class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition">
-							システム設定
-						</a>
-
-						<div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
-							個人設定
-						</div>
-						<a th:href="@{/password/change}"
-							class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition">
-							パスワード変更
-						</a>
-						<form th:action="@{/logout}" method="post">
-							<button type="submit"
-								class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">
-								ログアウト
-							</button>
-						</form>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</nav>
-
+	<main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+		<h1 class="text-2xl font-bold text-gray-800">メインメニュー</h1>
+		<p class="text-gray-600 mt-2">ここに予定表などのメインコンテンツが入ります。</p>
+	</main>
 </body>
 
 </html>
