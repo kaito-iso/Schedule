@@ -26,8 +26,4 @@ public class Holiday {
 	/** 登録タイプ **/
 	@Column(name = "create_type")
 	private String createType;
-	
-	/** 削除区分 **/
-	@Column(name = "is_deleted")
-	private boolean isDeleted;
 }

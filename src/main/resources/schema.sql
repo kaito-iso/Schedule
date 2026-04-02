@@ -27,6 +27,5 @@ CREATE TABLE m_user (
 CREATE TABLE m_holiday(
 	holiday_date		DATE		  PRIMARY KEY
 ,	holiday_name		VARCHAR(30)   NOT NULL
-,	create_type			VARCHAR(3)	  NOT NULL
-,	is_deleted			BOOLEAN		  NOT NULL
+,	create_type			VARCHAR(5)	  NOT NULL
 );

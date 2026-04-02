@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Holiday;
@@ -26,15 +28,37 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HolidayController {
 
+	private static final String GET_YEAR = "getYear";
 	private final HolidayService service;
 
 	@GetMapping("/holidays")
 	public String adminSetting(Model model) {
 
+		int year = LocalDate.now().getYear();
+		List<Integer> years = IntStream.rangeClosed(year, year + 2)
+				.boxed()
+				.toList();
+
 		List<Holiday> holidays = service.findHolidays();
+
+		model.addAttribute("years", years);
 		model.addAttribute("holidays", holidays);
 
 		return "admin_holidays";
+	}
+
+	@PostMapping("/holiday/import-api")
+	public String importHolidaysApi(@RequestParam(GET_YEAR) int getYear, RedirectAttributes redirectAttributes) {
+
+		try {
+			service.importHolidaysApi(getYear);
+			redirectAttributes.addFlashAttribute("successMessage", getYear + "年の祝日をインポートしました");
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", "通信エラーが発生しました");
+		}
+
+		return "redirect:/admin/holidays";
 	}
 
 	@GetMapping("/holiday/create")
@@ -71,11 +95,8 @@ public class HolidayController {
 	}
 
 	@PostMapping("/holiday/delete/{holidayDate}")
-	public String deleteHoliday(@PathVariable("holidayDate") LocalDate date, RedirectAttributes redirectAttributes) {
-
+	public String deleteHoliday(@PathVariable("holidayDate") LocalDate date) {
 		service.holidayDelete(date);
-
-		redirectAttributes.addFlashAttribute("successMessage", date + " の祝日を削除しました");
 		return "redirect:/admin/holidays";
 	}
 }

@@ -9,5 +9,5 @@ import com.example.demo.entity.Holiday;
 
 public interface HolidayRepository extends JpaRepository<Holiday, LocalDate> {
 
-	List<Holiday> findByIsDeletedOrderByHolidayDateAsc(boolean isDeleted);
+	List<Holiday> findByOrderByHolidayDateAsc();
 }
