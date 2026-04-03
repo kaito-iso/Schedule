@@ -21,6 +21,7 @@ INSERT INTO m_user (
 ,	add_date
 ,	upd_date
 ,	last_login_date
+,	is_active
 )
 VALUES (
 	'user'
@@ -43,6 +44,7 @@ VALUES (
 ,	'2025-01-01'
 ,	'2025-01-01'
 ,	null
+,	true
 );
 
 INSERT INTO m_user (
@@ -66,6 +68,7 @@ INSERT INTO m_user (
 ,	add_date
 ,	upd_date
 ,	last_login_date
+,	is_active
 )
 VALUES (
 	'admin'
@@ -88,4 +91,18 @@ VALUES (
 ,	'2025-01-01'
 ,	'2025-01-01'
 ,	null
+,	true
+);
+
+INSERT INTO m_facility(
+	facility_code
+,	facility_name
+,	display_order
+,	is_active
+)
+VALUES (
+	'HNSYA'
+,	'本社'
+,	1
+,	true
 );
