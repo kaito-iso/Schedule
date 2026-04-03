@@ -16,7 +16,15 @@ public class PasswordChangeService {
 
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
-
+	
+	/**
+	 * 指定されたユーザーのパスワードを変更します
+	 * @param userId パスワード変更対象のユーザーID
+	 * @param currentPassword 現在使用しているパスワード
+	 * @param newPassword 新しく設定するパスワード
+	 * @throws RuntimeException ユーザーが存在しない場合
+	 * @throws InvalidCurrentPasswordException 現在のパスワードが一致しない場合
+	 */
 	@Transactional
 	public void passwordChange(String userId, String currentPassword, String newPassword) {
 

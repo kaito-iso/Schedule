@@ -16,6 +16,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserRepository userRepository;
 
+	/**
+	 * ユーザーIDをキーにデータベースを検索し、Spring Securityのユーザー詳細オブジェクト（UserDetails）を生成
+	 * <p>
+	 * 検索の結果、ユーザーが存在しない場合は {@link UsernameNotFoundException} をスローする
+	 * </p>
+	 * @param userId ログイン時に入力されたユーザーID
+	 * @return Spring Securityのコンテキストで管理されるユーザー情報
+	 * @throws UsernameNotFoundException 指定されたユーザーIDに該当するユーザーがDBに存在しない場合
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 		// 指定されたIDでDBを検索

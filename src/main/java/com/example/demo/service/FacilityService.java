@@ -17,22 +17,54 @@ public class FacilityService {
 
 	private final FacilityRepository repository;
 
+	/**
+	 * 全ての施設情報を取得
+	 * @return 施設エンティティのリスト
+	 */
 	public List<Facility> findAll() {
 		return repository.findAll();
 	}
 
+	/**
+	 * 有効状態を指定して施設情報を取得し、表示順（昇順）でソートして返す
+	 * @param active 有効な施設のみ取得する場合はtrue、無効な施設はfalse
+	 * @return フィルタリングおよびソートされた施設エンティティのリスト
+	 */
 	public List<Facility> findFacilities(boolean acitive) {
 		return repository.findByActiveOrderByDisplayOrder(acitive);
 	}
 
+	/**
+	 * 施設コードをキーに施設情報を取得
+	 * @param facilityCode 検索対象の施設コード
+	 * @return 該当する施設が存在する場合はそのエンティティを含むOptional、存在しない場合は空のOptional
+	 */
 	public Optional<Facility> findById(String facilityCode) {
 		return repository.findById(facilityCode);
 	}
 
+	/**
+	 * 指定された施設コードのデータを削除
+	 * @param facilityCode 削除対象の施設コード
+	 */
 	public void delete(String facilityCode) {
 		repository.deleteById(facilityCode);
 	}
 
+	/**
+	 * 施設情報の登録または更新を行う
+	 * <p>
+	 * mode引数によって以下のバリデーションを行います：
+	 * <ul>
+	 * <li>"create": 施設コードが既に存在する場合は例外を投げる</li>
+	 * <li>"edit": 更新対象のデータが存在しない場合は例外を投げる</li>
+	 * </ul>
+	 * 表示順が数値として不正な場合は、デフォルト値として0を設定します。
+	 * </p>
+	 * @param form 施設情報の入力内容を含むフォームオブジェクト
+	 * @param mode 処理モード ("create" または "edit")
+	 * @throws RuntimeException バリデーションエラーが発生した場合
+	 */
 	public void save(FacilityForm form, String mode) {
 
 		if ("edit".equals(mode)) {
