@@ -32,7 +32,7 @@ public class HolidayController {
 	private final HolidayService service;
 
 	@GetMapping("/holidays")
-	public String adminSetting(Model model) {
+	public String showHolidays(Model model) {
 
 		int year = LocalDate.now().getYear();
 		List<Integer> years = IntStream.rangeClosed(year, year + 2)

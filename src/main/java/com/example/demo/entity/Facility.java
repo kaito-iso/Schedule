@@ -25,11 +25,11 @@ public class Facility {
 
 	/** 表示順序 **/
 	@Column(name = "display_order")
-	private String displayOrder;
+	private Integer displayOrder;
 
 	/** 削除区分 **/
 	@Column(name = "is_active")
-	private boolean isActive;
+	private boolean active;
 
 	/** 登録日時 **/
 	@Column(name = "add_date")
@@ -37,7 +37,7 @@ public class Facility {
 
 	/** 登録者コード **/
 	@Column(name = "add_code")
-	private LocalDateTime addCode;
+	private String addCode;
 
 	/** 更新日時 **/
 	@Column(name = "upd_date")
@@ -45,5 +45,5 @@ public class Facility {
 
 	/** 更新者コード **/
 	@Column(name = "upd_code")
-	private LocalDateTime updCode;
+	private String updCode;
 }
