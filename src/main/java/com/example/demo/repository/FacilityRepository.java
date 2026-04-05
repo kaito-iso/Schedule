@@ -8,5 +8,7 @@ import com.example.demo.entity.Facility;
 
 public interface FacilityRepository extends JpaRepository<Facility, String> {
 
+	List<Facility> findAllByOrderByDisplayOrderAsc();
+
 	List<Facility> findByActiveOrderByDisplayOrder(boolean active);
 }

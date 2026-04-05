@@ -22,7 +22,7 @@ public class FacilityService {
 	 * @return 施設エンティティのリスト
 	 */
 	public List<Facility> findAll() {
-		return repository.findAll();
+		return repository.findAllByOrderByDisplayOrderAsc();
 	}
 
 	/**
