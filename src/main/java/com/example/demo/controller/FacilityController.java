@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,7 +44,7 @@ public class FacilityController {
 	public String createFacilityForm(Model model) {
 
 		model.addAttribute("mode", "create");
-		model.addAttribute("facilityForm", new FacilityForm());
+		model.addAttribute("facilityForm", formActiveEnable());
 
 		return "admin_facility_form";
 	}
@@ -65,18 +67,10 @@ public class FacilityController {
 		return "admin_facility_form";
 	}
 
-	@PostMapping("/facility/delete/{facilityCode}")
-	public String deleteFacility(@PathVariable String facilityCode, RedirectAttributes redirectAttributes) {
-
-		service.delete(facilityCode);
-		redirectAttributes.addFlashAttribute("successMessage", "施設を削除しました。");
-
-		return "redirect:/admin/facilities";
-	}
-
 	@PostMapping("/facility/save")
 	public String saveFacility(@Validated @ModelAttribute("facilityForm") FacilityForm form,
 			BindingResult result,
+			@AuthenticationPrincipal UserDetails user,
 			@RequestParam(MODE) String mode,
 			Model model,
 			RedirectAttributes redirectAttributes) {
@@ -88,14 +82,16 @@ public class FacilityController {
 		}
 
 		try {
-			service.save(form, mode);
+
+			String userId = user.getUsername();
+			service.save(form, mode, userId);
 
 			String message = "create".equals(mode) ? "新規登録が完了しました。" : "更新が完了しました。";
 			model.addAttribute("successMessage", message);
 
 			if ("create".equals(mode)) {
 				model.addAttribute("mode", "create");
-				model.addAttribute("facilityForm", new FacilityForm());
+				model.addAttribute("facilityForm", formActiveEnable());
 			} else {
 				model.addAttribute("mode", "edit");
 				model.addAttribute("facilityForm", form);
@@ -117,5 +113,13 @@ public class FacilityController {
 		}
 
 		return "admin_facility_form";
+	}
+
+	public FacilityForm formActiveEnable() {
+
+		FacilityForm form = new FacilityForm();
+		form.setActive(true);
+		return form;
+
 	}
 }

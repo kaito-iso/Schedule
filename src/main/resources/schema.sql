@@ -43,8 +43,8 @@ CREATE TABLE m_facility(
 ,	facility_name		VARCHAR(50)	  NOT NULL
 ,	display_order		INT			  NOT NULL
 ,	is_active          	BOOLEAN		  NOT NULL
-,	add_date			TIMESTAMP
-,	add_code			VARCHAR(32)
+,	add_date			TIMESTAMP	  NOT NULL
+,	add_code			VARCHAR(32)   NOT NULL
 ,	upd_date			TIMESTAMP
 ,	upd_code			VARCHAR(32)
 );

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,23 +66,27 @@ public class FacilityService {
 	 * @param mode 処理モード ("create" または "edit")
 	 * @throws RuntimeException バリデーションエラーが発生した場合
 	 */
-	public void save(FacilityForm form, String mode) {
+	public void save(FacilityForm form, String mode, String userId) {
+
+		Facility facility = new Facility();
+		facility.setFacilityCode(form.getFacilityCode());
+		facility.setFacilityName(form.getFacilityName());
 
 		if ("edit".equals(mode)) {
 			if (!repository.existsById(form.getFacilityCode())) {
 				throw new RuntimeException("不正なリクエストです：更新対象が存在しません");
 			}
+			facility.setUpdDate(LocalDateTime.now());
+			facility.setUpdCode(userId);
 		}
 
 		if ("create".equals(mode)) {
 			if (repository.existsById(form.getFacilityCode())) {
 				throw new RuntimeException("この施設コードは既に登録されています");
 			}
+			facility.setAddDate(LocalDateTime.now());
+			facility.setAddCode(userId);
 		}
-
-		Facility facility = new Facility();
-		facility.setFacilityCode(form.getFacilityCode());
-		facility.setFacilityName(form.getFacilityName());
 
 		try {
 			facility.setDisplayOrder(Integer.parseInt(form.getDisplayOrder()));
