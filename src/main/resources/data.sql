@@ -94,11 +94,11 @@ VALUES (
 ,	true
 );
 
-INSERT INTO m_facility(facility_code,facility_name,display_order,is_active)
-VALUES ('HNSYA','本社',1,true);
+INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
+VALUES ('HNSYA','本社',1,true,'2025-01-01 12:00:00','admin');
 
-INSERT INTO m_facility(facility_code,facility_name,display_order,is_active)
-VALUES ('TOKYO','東京支社',2,true);
+INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
+VALUES ('TOKYO','東京支社',2,true,'2025-01-01 12:00:00','admin');
 
-INSERT INTO m_facility(facility_code,facility_name,display_order,is_active)
-VALUES ('OSAKA','大阪支社',3,true);
+INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
+VALUES ('OSAKA','大阪支社',3,true,'2025-01-01 12:00:00','admin');

@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS m_user;
 DROP TABLE IF EXISTS m_holiday;
 DROP TABLE IF EXISTS m_facility;
+DROP TABLE IF EXISTS m_job_title;
 
 -- ユーザーマスタ
 CREATE TABLE m_user (
@@ -44,6 +45,18 @@ CREATE TABLE m_facility(
 ,	is_active          	BOOLEAN		  NOT NULL
 ,	add_date			TIMESTAMP
 ,	add_code			VARCHAR(32)
+,	upd_date			TIMESTAMP
+,	upd_code			VARCHAR(32)
+);
+
+-- 役職マスタ
+CREATE TABLE m_job_title(
+	job_title_code		VARCHAR(5)	  PRIMARY KEY
+,	job_title_name		VARCHAR(50)	  NOT NULL
+,	display_order		INT			  NOT NULL
+,	is_active          	BOOLEAN		  NOT NULL
+,	add_date			TIMESTAMP	  NOT NULL
+,	add_code			VARCHAR(32)   NOT NULL
 ,	upd_date			TIMESTAMP
 ,	upd_code			VARCHAR(32)
 );

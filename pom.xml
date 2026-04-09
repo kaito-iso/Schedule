@@ -7,12 +7,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- 親プロジェクト Spring Bootの共通設定 -->
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
 
 	<!-- プロジェクト識別情報 -->
 	<groupId>com.example</groupId> <!-- gorupId:パッケージのベース -->

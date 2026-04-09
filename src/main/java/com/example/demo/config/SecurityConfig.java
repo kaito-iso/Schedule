@@ -28,6 +28,7 @@ public class SecurityConfig {
 		http
 				// アクセス認可の設定
 				.authorizeHttpRequests(authz -> authz
+						.requestMatchers("/h2-console/**").permitAll()
 						// ログイン前でもアクセスを許可
 						.requestMatchers("/login", "/css/**", "/js/**").permitAll()
 						// 権限が管理者だけがアクセス許可
