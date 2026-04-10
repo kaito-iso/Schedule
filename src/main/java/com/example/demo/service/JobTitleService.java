@@ -16,8 +16,8 @@ public class JobTitleService {
 	private final JobTitleRepository repository;
 
 	/**
-	 * 全ての施設マスタを取得
-	 * @return 施設マスタのリスト
+	 * 全ての役職マスタを取得
+	 * @return 役職マスタのリスト
 	 */
 	public List<JobTitle> findAll() {
 		return repository.findAllByOrderByDisplayOrderAsc();
