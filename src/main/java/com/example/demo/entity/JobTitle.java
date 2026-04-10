@@ -10,18 +10,18 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "m_facility")
+@Table(name = "m_job_title")
 @Data
-public class Facility {
+public class JobTitle {
 
-	/** 施設コード **/
+	/** 役職コード **/
 	@Id
-	@Column(name = "facility_code", length = 5)
-	private String facilityCode;
+	@Column(name = "job_title_code", length = 3)
+	private String jobTitleCode;
 
-	/** 施設名　**/
-	@Column(name = "facility_name", length = 50, nullable = false)
-	private String facilityName;
+	/** 役職名　**/
+	@Column(name = "job_title_name", length = 50, nullable = false)
+	private String jobTitleName;
 
 	/** 表示順序 **/
 	@Column(name = "display_order", nullable = false)

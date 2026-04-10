@@ -13,17 +13,17 @@ import lombok.Data;
 @Table(name = "m_holiday")
 @Data
 public class Holiday {
-	
+
 	/** 祝日date **/
 	@Id
 	@Column(name = "holiday_date")
 	private LocalDate holidayDate;
 
 	/** 祝日name　**/
-	@Column(name = "holiday_name")
+	@Column(name = "holiday_name", length = 30, nullable = false)
 	private String holidayName;
-	
+
 	/** 登録タイプ **/
-	@Column(name = "create_type")
+	@Column(name = "create_type", length = 5, nullable = false)
 	private String createType;
 }

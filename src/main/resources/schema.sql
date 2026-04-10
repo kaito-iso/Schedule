@@ -16,7 +16,7 @@ CREATE TABLE m_user (
 ,	middle_name_kana	VARCHAR(50)
 ,	first_name_kana   	VARCHAR(50)   NOT NULL
 ,	mail              	VARCHAR(255)  UNIQUE
-,	job_post_cd     	VARCHAR(3)
+,	job_title_code     	VARCHAR(3)
 ,	extension_tel     	VARCHAR(50)
 ,	mobile_tel        	VARCHAR(50)
 ,	birthday          	DATE
@@ -51,7 +51,7 @@ CREATE TABLE m_facility(
 
 -- 役職マスタ
 CREATE TABLE m_job_title(
-	job_title_code		VARCHAR(5)	  PRIMARY KEY
+	job_title_code		VARCHAR(3)	  PRIMARY KEY
 ,	job_title_name		VARCHAR(50)	  NOT NULL
 ,	display_order		INT			  NOT NULL
 ,	is_active          	BOOLEAN		  NOT NULL
