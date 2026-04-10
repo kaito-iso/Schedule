@@ -20,7 +20,7 @@ public class FacilityService {
 
 	/**
 	 * 全ての施設情報を取得
-	 * @return 施設エンティティのリスト
+	 * @return 施設マスタのリスト
 	 */
 	public List<Facility> findAll() {
 		return repository.findAllByOrderByDisplayOrderAsc();
