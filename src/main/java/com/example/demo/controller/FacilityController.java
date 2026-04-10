@@ -34,7 +34,6 @@ public class FacilityController {
 	public String showFacilities(Model model) {
 
 		List<Facility> facilities = service.findAll();
-		System.out.println(facilities);
 		model.addAttribute("facilities", facilities);
 
 		return "admin_facilities";

@@ -68,25 +68,31 @@ public class FacilityService {
 	 */
 	public void save(FacilityForm form, String mode, String userId) {
 
-		Facility facility = new Facility();
-		facility.setFacilityCode(form.getFacilityCode());
-		facility.setFacilityName(form.getFacilityName());
+		Facility facility;
 
 		if ("edit".equals(mode)) {
-			if (!repository.existsById(form.getFacilityCode())) {
-				throw new RuntimeException("不正なリクエストです：更新対象が存在しません");
-			}
+			facility = repository.findById(form.getFacilityCode())
+					.orElseThrow(() -> new RuntimeException("不正なリクエストです：更新対象が存在しません"));
+
 			facility.setUpdDate(LocalDateTime.now());
 			facility.setUpdCode(userId);
-		}
 
-		if ("create".equals(mode)) {
+		} else if ("create".equals(mode)) {
+
 			if (repository.existsById(form.getFacilityCode())) {
 				throw new RuntimeException("この施設コードは既に登録されています");
 			}
+			
+			facility = new Facility();
+			facility.setFacilityCode(form.getFacilityCode());
 			facility.setAddDate(LocalDateTime.now());
 			facility.setAddCode(userId);
+			
+		} else {
+			throw new IllegalArgumentException("無効なモードです: " + mode);
 		}
+
+		facility.setFacilityName(form.getFacilityName());
 
 		try {
 			facility.setDisplayOrder(Integer.parseInt(form.getDisplayOrder()));
@@ -98,4 +104,5 @@ public class FacilityService {
 
 		repository.save(facility);
 	}
+
 }
