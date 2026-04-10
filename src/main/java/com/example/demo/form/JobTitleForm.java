@@ -11,7 +11,7 @@ public class JobTitleForm {
 
 	/** 役職コード **/
 	@NotBlank(message = "役職コードを入力してください")
-	@Size(max = 5, message = "最大5文字までしか登録できません")
+	@Size(max = 3, message = "最大3文字までしか登録できません")
 	@Pattern(regexp = "^[0-9a-zA-Z]+$", message = "英数字で入力してください")
 	private String jobTitleCode;
 

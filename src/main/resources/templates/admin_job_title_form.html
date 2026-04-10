@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title th:text="${mode == 'create'} ? 'Admin - Facility Registration' : 'Admin - Facility Edit'"></title>
+	<title th:text="${mode == 'create'} ? 'Admin - JobTitle Registration' : 'Admin - JobTitle Edit'"></title>
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -17,7 +17,7 @@
 			<span>/</span>
 			<a th:href="@{/admin/setting}" class="hover:text-teal-600 transition">システム設定</a>
 			<span>/</span>
-			<a th:href="@{/admin/facilities}" class="hover:text-teal-600 transition">施設マスタ</a>
+			<a th:href="@{/admin/job-titles}" class="hover:text-teal-600 transition">施設マスタ</a>
 			<span>/</span>
 			<span class="text-gray-900 font-medium" th:text="${mode == 'create'} ? '新規登録' : '編集'"></span>
 		</div>
@@ -32,10 +32,10 @@
 						</path>
 					</svg>
 				</span>
-				<h1 class="text-2xl font-bold text-gray-900" th:text="${mode == 'create'} ? '施設の新規登録' : '施設の編集'"></h1>
+				<h1 class="text-2xl font-bold text-gray-900" th:text="${mode == 'create'} ? '役職の新規登録' : '役職の編集'"></h1>
 			</div>
 
-			<form th:action="@{/admin/facility/save}" th:object="${facilityForm}" method="post" class="space-y-6">
+			<form th:action="@{/admin/job-title/save}" th:object="${jobTitleForm}" method="post" class="space-y-6">
 
 				<input type="hidden" name="mode" th:value="${mode}" />
 
@@ -59,10 +59,10 @@
 
 				<div>
 					<label class="block text-sm font-bold text-gray-700 mb-2">施設コード</label>
-					<input type="text" th:field="*{facilityCode}" th:readonly="${mode == 'edit'}" placeholder="例：FAC01"
+					<input type="text" th:field="*{jobTitleCode}" th:readonly="${mode == 'edit'}" placeholder="例：FAC01"
 						class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none transition-all"
-						th:classappend="${#fields.hasErrors('facilityCode')} ? 'border-red-400 ring-4 ring-red-50 bg-red-50' : (${mode == 'edit'} ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200' : 'border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-50/50')">
-					<p th:if="${#fields.hasErrors('facilityCode')}" th:errors="*{facilityCode}"
+						th:classappend="${#fields.hasErrors('jobTitleCode')} ? 'border-red-400 ring-4 ring-red-50 bg-red-50' : (${mode == 'edit'} ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200' : 'border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-50/50')">
+					<p th:if="${#fields.hasErrors('jobTitleCode')}" th:errors="*{jobTitleCode}"
 						class="text-red-500 text-xs mt-2 font-bold flex items-center gap-1 leading-relaxed">
 						<span class="w-1 h-1 bg-red-500 rounded-full"></span>
 					</p>
@@ -71,11 +71,11 @@
 				</div>
 
 				<div>
-					<label class="block text-sm font-bold text-gray-700 mb-2">施設・設備名</label>
-					<input type="text" th:field="*{facilityName}" placeholder="例：第1会議室"
+					<label class="block text-sm font-bold text-gray-700 mb-2">役職・役職名</label>
+					<input type="text" th:field="*{jobTitleName}" placeholder="例：一般職"
 						class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none transition-all"
-						th:classappend="${#fields.hasErrors('facilityName')} ? 'border-red-400 ring-4 ring-red-50 bg-red-50' : 'border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-50/50'">
-					<p th:if="${#fields.hasErrors('facilityName')}" th:errors="*{facilityName}"
+						th:classappend="${#fields.hasErrors('jobTitleName')} ? 'border-red-400 ring-4 ring-red-50 bg-red-50' : 'border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-50/50'">
+					<p th:if="${#fields.hasErrors('jobTitleName')}" th:errors="*{jobTitleName}"
 						class="text-red-500 text-xs mt-2 font-bold flex items-center gap-1 leading-relaxed">
 						<span class="w-1 h-1 bg-red-500 rounded-full"></span>
 					</p>
@@ -115,7 +115,7 @@
 					</button>
 
 					<div class="text-center">
-						<a th:href="@{/admin/facilities}"
+						<a th:href="@{/admin/job-titles}"
 							class="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1">
 							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -129,7 +129,7 @@
 		</div>
 
 		<div class="mt-8 flex justify-between items-center opacity-50">
-			<p class="text-[10px] text-gray-400 italic font-mono">System Ref: FACILITY_FORM_v2.0</p>
+			<p class="text-[10px] text-gray-400 italic font-mono">System Ref: JOB_TITLE_FORM_v2.0</p>
 		</div>
 	</main>
 </body>
