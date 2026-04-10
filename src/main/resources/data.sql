@@ -104,10 +104,10 @@ INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_d
 VALUES ('OSAKA','大阪支社',3,true,'2025-01-01 12:00:00','admin');
 
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
-VALUES ('000','会長',3,true,'2025-01-01 12:00:00','admin');
+VALUES ('000','会長',1,true,'2025-01-01 12:00:00','admin');
 
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
-VALUES ('010','社長',3,true,'2025-01-01 12:00:00','admin');
+VALUES ('010','社長',2,true,'2025-01-01 12:00:00','admin');
 
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
 VALUES ('900','一般社員',3,true,'2025-01-01 12:00:00','admin');

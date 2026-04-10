@@ -121,18 +121,18 @@
 								th:text="${j.jobTitleName}">
 							</td>
 
-							<td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${f.displayOrder}">
+							<td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${j.displayOrder}">
 							</td>
 
 							<td class="px-6 py-4 text-center text-sm">
-								<span th:text="${f.active} ? '有効' : '無効'"
+								<span th:text="${j.active} ? '有効' : '無効'"
 									th:classappend="${j.active} ? 'text-teal-600' : 'text-red-500'">
 								</span>
 							</td>
 
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
 								<div class="flex items-center justify-center gap-3">
-									<a th:href="@{/admin/facility/edit/{code}(code=${j.facilityCode})}"
+									<a th:href="@{/admin/job-title/edit/{code}(code=${j.jobTitleCode})}"
 										class="text-gray-400 hover:text-teal-600 transition p-1.5 rounded-md hover:bg-teal-50"
 										title="編集">
 										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,7 +160,7 @@
 							class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-teal-400 opacity-75"></span>
 						<span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
 					</span>
-					※ 施設データはシステム全体に即時反映されます。
+					※ 役職データはシステム全体に即時反映されます。
 				</p>
 			</div>
 		</div>

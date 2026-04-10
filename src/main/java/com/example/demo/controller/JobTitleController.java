@@ -48,7 +48,7 @@ public class JobTitleController {
 		return "admin_job_title_form";
 	}
 
-	@GetMapping("/jobTitle/edit/{jobTitleCode}")
+	@GetMapping("/job-title/edit/{jobTitleCode}")
 	public String createFacilityEdit(@PathVariable String jobTitleCode, Model model) {
 
 		JobTitle jobTitle = service.findById(jobTitleCode)
@@ -66,7 +66,7 @@ public class JobTitleController {
 		return "admin_job_title_form";
 	}
 
-	@PostMapping("/jobTitle/save")
+	@PostMapping("/job-title/save")
 	public String saveFacility(@Validated @ModelAttribute("jobTitleForm") JobTitleForm form,
 			BindingResult result,
 			@AuthenticationPrincipal UserDetails user,
