@@ -7,8 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.JobTitle;
 
 public interface JobTitleRepository extends JpaRepository<JobTitle, String> {
-
 	List<JobTitle> findAllByOrderByDisplayOrderAsc();
-
-	List<JobTitle> findByActiveOrderByDisplayOrder(boolean active);
 }

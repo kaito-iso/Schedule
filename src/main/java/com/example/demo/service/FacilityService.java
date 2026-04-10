@@ -27,15 +27,6 @@ public class FacilityService {
 	}
 
 	/**
-	 * 有効状態を指定して施設情報を取得し、表示順（昇順）でソートして返す
-	 * @param active 有効な施設のみ取得する場合はtrue、無効な施設はfalse
-	 * @return フィルタリングおよびソートされた施設エンティティのリスト
-	 */
-	public List<Facility> findFacilities(boolean acitive) {
-		return repository.findByActiveOrderByDisplayOrder(acitive);
-	}
-
-	/**
 	 * 施設コードをキーに施設情報を取得
 	 * @param facilityCode 検索対象の施設コード
 	 * @return 該当する施設が存在する場合はそのエンティティを含むOptional、存在しない場合は空のOptional
@@ -104,5 +95,4 @@ public class FacilityService {
 
 		repository.save(facility);
 	}
-
 }
