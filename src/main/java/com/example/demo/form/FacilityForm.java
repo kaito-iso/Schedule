@@ -12,6 +12,7 @@ public class FacilityForm {
 	/** 施設コード **/
 	@NotBlank(message = "施設コードを入力してください")
 	@Size(max = 5, message = "最大5文字までしか登録できません")
+	@Pattern(regexp = "^[0-9a-zA-Z]+$", message = "英数字で入力してください")
 	private String facilityCode;
 
 	/** 施設名 **/
