@@ -14,13 +14,18 @@
 		<div class="bg-white border border-gray-300 rounded shadow-sm overflow-hidden mb-8">
 
 			<div class="flex justify-between items-center bg-white px-4 py-2 border-b border-gray-300">
-				<div class="text-lg font-medium">2026年 4月 11日 (土曜日)</div>
+				<div class="text-lg font-medium">
+					<p th:text="${today}">今日の日付</p>
+				</div>
 				<div class="flex border border-gray-300 rounded text-sm">
-					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前週</button>
-					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前日</button>
-					<button class="px-3 py-1 border-r border-gray-300 bg-gray-50 font-bold">今日</button>
-					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">翌日</button>
-					<button class="px-3 py-1 hover:bg-gray-100">翌週</button>
+					<a th:href="@{/menu(date=${prevWeek})}"
+						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前週</a>
+					<a th:href="@{/menu(date=${prevDay})}"
+						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前日</a>
+					<a th:href="@{/menu}" class="px-3 py-1 border-r border-gray-300 bg-gray-50 font-bold">今日</a>
+					<a th:href="@{/menu(date=${nextDay})}"
+						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">翌日</a>
+					<a th:href="@{/menu(date=${nextWeek})}" class="px-3 py-1 hover:bg-gray-100">翌週</a>
 				</div>
 			</div>
 
@@ -30,60 +35,21 @@
 					<div class="text-sm text-gray-500">月予定</div>
 				</div>
 
-				<div class="border-r border-gray-300 flex flex-col min-h-[200px]">
-					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">1日(月)</div>
-					<div class="p-2 flex-grow text-xs text-center">
-						<div class="mt-4">10:00〜11:00</div>
-						<div>会議</div>
+				<div th:each="day : ${days}" class="border-r border-gray-300 flex flex-col min-h-[200px]"
+					th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-50' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-50' : '')}">
+
+					<div class="text-center py-1 border-b border-gray-300"
+						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-200' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-200' : 'bg-gray-50')}">
+						<p th:text="${#temporals.format(day, 'dd日(E)', T(java.util.Locale).JAPANESE)}">日付</p>
 					</div>
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
-						+</div>
-				</div>
 
-				<div class="border-r border-gray-300 flex flex-col">
-					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">2日(火)</div>
 					<div class="p-2 flex-grow text-xs text-center">
-						<div class="mt-4">12:00〜14:00</div>
-						<div>会議</div>
 					</div>
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
-						+</div>
-				</div>
 
-				<div class="border-r border-gray-300 flex flex-col">
-					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">3日(水)</div>
-					<div class="p-2 flex-grow text-xs text-center"></div>
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
-						+</div>
-				</div>
-
-				<div class="border-r border-gray-300 flex flex-col">
-					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">4日(木)</div>
-					<div class="p-2 flex-grow text-xs text-center"></div>
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
-						+</div>
-				</div>
-
-				<div class="border-r border-gray-300 flex flex-col">
-					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">5日(金)</div>
-					<div class="p-2 flex-grow text-xs text-center"></div>
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
-						+</div>
-				</div>
-
-				<div class="border-r border-gray-300 flex flex-col bg-blue-50">
-					<div class="bg-blue-200 text-center py-1 border-b border-gray-300">6日(土)</div>
-					<div class="p-2 flex-grow text-xs text-center"></div>
-					<div
-						class="p-1 border-t border-gray-200 text-gray-400 cursor-pointer hover:bg-blue-100 text-center">
-						+</div>
-				</div>
-
-				<div class="flex flex-col bg-red-50">
-					<div class="bg-red-200 text-center py-1 border-b border-gray-300">7日(日)</div>
-					<div class="p-2 flex-grow text-xs text-center"></div>
-					<div class="p-1 border-t border-gray-200 text-gray-400 cursor-pointer hover:bg-red-100 text-center">
-						+</div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-opacity-50 text-center"
+						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'hover:bg-blue-100' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'hover:bg-red-100' : 'hover:bg-gray-50')}">
+						+
+					</div>
 				</div>
 			</div>
 		</div>
