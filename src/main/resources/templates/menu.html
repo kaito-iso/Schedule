@@ -10,9 +10,94 @@
 <body class="bg-gray-50">
 	<div th:replace="~{common/layout :: header}"></div>
 
-	<main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-		<h1 class="text-2xl font-bold text-gray-800">メインメニュー</h1>
-		<p class="text-gray-600 mt-2">ここに予定表などのメインコンテンツが入ります。</p>
+	<main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+		<div class="bg-white border border-gray-300 rounded shadow-sm overflow-hidden mb-8">
+
+			<div class="flex justify-between items-center bg-white px-4 py-2 border-b border-gray-300">
+				<div class="text-lg font-medium">2026年 4月 11日 (土曜日)</div>
+				<div class="flex border border-gray-300 rounded text-sm">
+					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前週</button>
+					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前日</button>
+					<button class="px-3 py-1 border-r border-gray-300 bg-gray-50 font-bold">今日</button>
+					<button class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">翌日</button>
+					<button class="px-3 py-1 hover:bg-gray-100">翌週</button>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-8 border-collapse">
+				<div class="border-r border-gray-300 p-4 flex flex-col justify-center items-center text-center">
+					<div class="font-bold">山田 太郎</div>
+					<div class="text-sm text-gray-500">月予定</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col min-h-[200px]">
+					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">1日(月)</div>
+					<div class="p-2 flex-grow text-xs text-center">
+						<div class="mt-4">10:00〜11:00</div>
+						<div>会議</div>
+					</div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
+						+</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col">
+					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">2日(火)</div>
+					<div class="p-2 flex-grow text-xs text-center">
+						<div class="mt-4">12:00〜14:00</div>
+						<div>会議</div>
+					</div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
+						+</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col">
+					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">3日(水)</div>
+					<div class="p-2 flex-grow text-xs text-center"></div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
+						+</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col">
+					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">4日(木)</div>
+					<div class="p-2 flex-grow text-xs text-center"></div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
+						+</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col">
+					<div class="bg-gray-50 text-center py-1 border-b border-gray-300">5日(金)</div>
+					<div class="p-2 flex-grow text-xs text-center"></div>
+					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-gray-50 text-center">
+						+</div>
+				</div>
+
+				<div class="border-r border-gray-300 flex flex-col bg-blue-50">
+					<div class="bg-blue-200 text-center py-1 border-b border-gray-300">6日(土)</div>
+					<div class="p-2 flex-grow text-xs text-center"></div>
+					<div
+						class="p-1 border-t border-gray-200 text-gray-400 cursor-pointer hover:bg-blue-100 text-center">
+						+</div>
+				</div>
+
+				<div class="flex flex-col bg-red-50">
+					<div class="bg-red-200 text-center py-1 border-b border-gray-300">7日(日)</div>
+					<div class="p-2 flex-grow text-xs text-center"></div>
+					<div class="p-1 border-t border-gray-200 text-gray-400 cursor-pointer hover:bg-red-100 text-center">
+						+</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-64">
+				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700">お知らせ</h2>
+				<p class="text-sm text-gray-500 italic">ここに最新のお知らせが表示されます。</p>
+			</div>
+			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-64">
+				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700">データグラフ</h2>
+				<p class="text-sm text-gray-500 italic">ここにグラフが表示されます。</p>
+			</div>
+		</div>
 	</main>
 </body>
 
