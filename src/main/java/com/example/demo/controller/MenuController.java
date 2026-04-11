@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -18,9 +21,18 @@ import lombok.RequiredArgsConstructor;
 public class MenuController {
 
 	private static final String date = "date";
+	private final UserService userService;
 
 	@GetMapping("/menu")
-	public String menu(@RequestParam(name = date, required = false) String date, Model model) {
+	public String menu(@RequestParam(name = date, required = false) String date, Model model, Principal principal) {
+
+		// ユーザーID取得
+		String userId = principal.getName();
+
+		// ユーザー名取得
+		String userName = userService.userName(userId);
+		
+		model.addAttribute("userName", userName);
 
 		LocalDate baseDate;
 

@@ -28,6 +28,19 @@ public class UserService {
 	}
 
 	/**
+	 * ユーザーIDをキーにユーザー情報を取得して名前を返す
+	 * @param userId 検索対象のユーザーID
+	 * @return 該当するユーザーのユーザー名
+	 */
+	public String userName(String userId) {
+
+		User user = repository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("ユーザーが見つかりません: " + userId));
+
+		return String.format("%s %s", user.getLastName(), user.getFirstName());
+	}
+
+	/**
 	 * 指定されたユーザーの最終ログイン日時を現在時刻に更新
 	 * @param userId 更新対象のユーザーID
 	 */

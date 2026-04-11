@@ -75,9 +75,9 @@ VALUES (
 ,	'$2a$10$Y13qO8OpQFRyQckvBASWOulhOvQ2fMPkEq3Umch.kiTplvjbXxTOq'
 ,	'ROLE_ADMIN'
 ,	true
-,	'苗字admin'
+,	'山田'
 ,	null
-,	'名前admin'
+,	'太郎'
 ,	'ミョウジ'
 ,	null
 ,	'ナマエ'
