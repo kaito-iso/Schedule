@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS m_user;
 DROP TABLE IF EXISTS m_holiday;
 DROP TABLE IF EXISTS m_facility;
 DROP TABLE IF EXISTS m_job_title;
+DROP TABLE IF EXISTS m_schedule_category;
+DROP TABLE IF EXISTS t_schedule;
 
 -- ユーザーマスタ
 CREATE TABLE m_user (
@@ -59,4 +61,21 @@ CREATE TABLE m_job_title(
 ,	add_code			VARCHAR(32)   NOT NULL
 ,	upd_date			TIMESTAMP
 ,	upd_code			VARCHAR(32)
+);
+
+-- スケジュールカテゴリー
+CREATE TABLE m_schedule_category(
+	category_code		VARCHAR(5)	  PRIMARY KEY
+,	category_name		VARCHAR(50)	  NOT NULL
+,	category_color		VARCHAR(7) 	  NOT NULL
+,	display_order		INT			  NOT NULL
+,	is_active          	BOOLEAN		  NOT NULL
+,	add_date			TIMESTAMP	  NOT NULL
+,	add_code			VARCHAR(32)   NOT NULL
+,	upd_date			TIMESTAMP
+,	upd_code			VARCHAR(32)
+);
+
+CREATE TABLE t_schedules(
+	id					BIGINT		  PRIMARY KEY 
 );

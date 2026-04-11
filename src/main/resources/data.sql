@@ -96,18 +96,21 @@ VALUES (
 
 INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
 VALUES ('HNSYA','本社',1,true,'2025-01-01 12:00:00','admin');
-
 INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
 VALUES ('TOKYO','東京支社',2,true,'2025-01-01 12:00:00','admin');
-
 INSERT INTO m_facility(facility_code,facility_name,display_order,is_active,add_date,add_code)
 VALUES ('OSAKA','大阪支社',3,true,'2025-01-01 12:00:00','admin');
 
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
 VALUES ('000','会長',1,true,'2025-01-01 12:00:00','admin');
-
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
 VALUES ('010','社長',2,true,'2025-01-01 12:00:00','admin');
-
 INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,add_date,add_code)
 VALUES ('900','一般社員',3,true,'2025-01-01 12:00:00','admin');
+
+INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
+VALUES('KAIGI','会議','#1e90ff',1,true,'2026-04-01 12:00:00','admin');
+INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
+VALUES('RAIHO','来訪','#00ff7f',2,true,'2026-04-01 12:00:00','admin');
+INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
+VALUES('SYTYO','出張','#ffb6c1',3,true,'2026-04-01 12:00:00','admin');
