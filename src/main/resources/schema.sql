@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS m_facility;
 DROP TABLE IF EXISTS m_job_title;
 DROP TABLE IF EXISTS m_schedule_category;
 DROP TABLE IF EXISTS t_schedule;
+DROP TABLE IF EXISTS t_schedule_participant;
+DROP TABLE IF EXISTS t_schedule_facilitie;
 
 -- ユーザーマスタ
 CREATE TABLE m_user (
@@ -76,6 +78,35 @@ CREATE TABLE m_schedule_category(
 ,	upd_code			VARCHAR(32)
 );
 
-CREATE TABLE t_schedules(
+-- スケジュール
+CREATE TABLE t_schedule(
 	id					BIGINT		  PRIMARY KEY 
+,	category_code		VARCHAR(5)
+,	title				VARCHAR(100)
+,	content				TEXT
+,	start_date			TIMESTAMP	  NOT NULL
+,	end_date			TIMESTAMP	  NOT NULL
+,	is_all_day			BOOLEAN		  NOT NULL
+,	is_public			BOOLEAN		  NOT NULL
+,	meeting_url			VARCHAR(500)
+,	recurrence_rule		TEXT
+,	recurrence_id		BIGINT
+,	add_date			TIMESTAMP	  NOT NULL
+,	add_code			VARCHAR(32)	  NOT NULL
+,	upd_date			TIMESTAMP
+,	upd_code			VARCHAR(32)
+);
+
+-- スケジュール参加者
+CREATE TABLE t_schedule_participant(
+	schedule_id 		BIGINT 		  NOT NULL
+,	user_id     		VARCHAR(32)   NOT NULL
+,	PRIMARY KEY (schedule_id, user_id)
+);
+
+-- スケジュール施設
+CREATE TABLE t_schedule_facilitie(
+	schedule_id 		BIGINT		  NOT NULL
+,	facility_code 		VARCHAR(5) 	  NOT NULL
+,	PRIMARY KEY (schedule_id, facility_code)
 );
