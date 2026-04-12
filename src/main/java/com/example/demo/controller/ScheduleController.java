@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.service.ScheduleCategoryService;
+import com.example.demo.service.YearService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -15,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class ScheduleController {
 
 	private static final String date = "date";
+	private final YearService yearService;
+	private final ScheduleCategoryService categoryService;
 
 	@GetMapping("/menu/create")
 	public String showCreateForm(@RequestParam(name = date, required = false) String dateStr, Model model) {
@@ -32,11 +37,13 @@ public class ScheduleController {
 		model.addAttribute("selectedDate", initialDate);
 
 		// セレクトボックス用のリスト
-		model.addAttribute("years", List.of(2024, 2025, 2026, 2027, 2028)); // 適宜調整
+		model.addAttribute("years", yearService.findAll());
 		model.addAttribute("months", java.util.stream.IntStream.rangeClosed(1, 12).boxed().toList());
 		model.addAttribute("daysInMonth", java.util.stream.IntStream.rangeClosed(1, 31).boxed().toList());
 		model.addAttribute("hours", java.util.stream.IntStream.rangeClosed(0, 23).boxed().toList());
 		model.addAttribute("minutes", List.of("00", "15", "30", "45")); // 15分刻みの例
+		model.addAttribute("categorys",categoryService.findAll());
+		
 		return "schedule_form";
 	}
 }

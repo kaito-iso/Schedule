@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS m_schedule_category;
 DROP TABLE IF EXISTS t_schedule;
 DROP TABLE IF EXISTS t_schedule_participant;
 DROP TABLE IF EXISTS t_schedule_facilitie;
+DROP TABLE IF EXISTS m_year;
 
 -- ユーザーマスタ
 CREATE TABLE m_user (
@@ -109,4 +110,12 @@ CREATE TABLE t_schedule_facilitie(
 	schedule_id 		BIGINT		  NOT NULL
 ,	facility_code 		VARCHAR(5) 	  NOT NULL
 ,	PRIMARY KEY (schedule_id, facility_code)
+);
+
+-- スケジュール年
+CREATE TABLE m_year(
+	"year"				INT 		  PRIMARY KEY 
+,	era_name			VARCHAR(10)
+,	era_year			INT 
+,	is_active			BOOLEAN		  NOT NULL
 );

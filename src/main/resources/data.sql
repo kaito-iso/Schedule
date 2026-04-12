@@ -114,3 +114,10 @@ INSERT INTO m_schedule_category(category_code,category_name,category_color,displ
 VALUES('RAIHO','来訪','#00ff7f',2,true,'2026-04-01 12:00:00','admin');
 INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
 VALUES('SYTYO','出張','#ffb6c1',3,true,'2026-04-01 12:00:00','admin');
+
+INSERT INTO m_year("year",era_name,era_year,is_active)
+VALUES(2026,'令和',8,true);
+INSERT INTO m_year("year",era_name,era_year,is_active)
+VALUES(2027,'令和',9,true);
+INSERT INTO m_year("year",era_name,era_year,is_active)
+VALUES(2028,'令和',10,true);
