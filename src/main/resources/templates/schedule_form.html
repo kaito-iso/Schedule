@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>予定の登録 - Schedule System</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		/* サイボウズ風の細かな調整 */
+		select {
+			appearance: none;
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 0.2rem center;
+			background-size: 1em;
+			padding-right: 1.2rem !important;
+		}
+	</style>
+</head>
+
+<body class="bg-[#f0f4f7] font-sans">
+	<div th:replace="~{common/layout :: header}"></div>
+
+	<main class="max-w-4xl mx-auto py-6 px-4">
+		<div class="flex space-x-1 mb-0">
+			<div
+				class="px-5 py-2 bg-white border-t border-l border-r border-gray-300 rounded-t text-sm font-bold shadow-[0_-2px_5px_rgba(0,0,0,0.05)] text-[#333]">
+				通常予定</div>
+			<div
+				class="px-5 py-2 bg-[#e5ebef] border border-gray-300 rounded-t text-sm text-[#555] hover:bg-gray-200 cursor-pointer transition-colors">
+				繰り返し予定</div>
+		</div>
+
+		<div class="bg-white border border-gray-300 shadow-sm">
+			<div class="bg-[#7fb1e3] text-white px-4 py-1.5 font-bold shadow-inner text-base">
+				予定の登録
+			</div>
+
+			<form th:action="@{/menu/create}" method="post" class="p-8 space-y-4 text-sm text-[#333]">
+
+				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
+					<label class="font-bold text-right pr-8 text-gray-600">日付</label>
+					<div class="flex items-center space-x-1">
+						<select name="year"
+							class="border border-gray-300 px-2 py-1 rounded bg-white hover:border-gray-400">
+							<option th:each="y : ${years}" th:value="${y}" th:text="${y}"
+								th:selected="${y == selectedDate.year}"></option>
+						</select>
+						<span class="pr-2">年</span>
+
+						<select name="month"
+							class="border border-gray-300 px-2 py-1 rounded bg-white hover:border-gray-400">
+							<option th:each="m : ${months}" th:value="${m}" th:text="${m}"
+								th:selected="${m == selectedDate.monthValue}"></option>
+						</select>
+						<span class="pr-2">月</span>
+
+						<select name="day"
+							class="border border-gray-300 px-2 py-1 rounded bg-white hover:border-gray-400">
+							<option th:each="d : ${daysInMonth}" th:value="${d}" th:text="${d}"
+								th:selected="${d == selectedDate.dayOfMonth}"></option>
+						</select>
+						<span class="pr-2">日</span>
+
+						<span class="text-blue-600 hover:underline cursor-pointer text-xs ml-4">複数の日付を指定する</span>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
+					<label class="font-bold text-right pr-8 text-gray-600">時刻</label>
+					<div class="flex items-center">
+						<select name="startHour" class="border border-gray-300 px-2 py-1 rounded">
+							<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"
+								th:selected="${h == 9}"></option>
+						</select>
+						<span class="px-1">時</span>
+						<select name="startMinute" class="border border-gray-300 px-2 py-1 rounded">
+							<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
+						</select>
+						<span class="px-1">分</span>
+
+						<span class="px-4 text-gray-400">〜</span>
+
+						<select name="endHour" class="border border-gray-300 px-2 py-1 rounded">
+							<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"
+								th:selected="${h == 10}"></option>
+						</select>
+						<span class="px-1">時</span>
+						<select name="endMinute" class="border border-gray-300 px-2 py-1 rounded">
+							<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
+						</select>
+						<span class="px-1">分</span>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
+					<label class="font-bold text-right pr-8 text-gray-600">予定</label>
+					<div class="flex space-x-2">
+						<select name="genreId"
+							class="border border-gray-300 px-2 py-1 rounded bg-[#f9f9f9] min-w-[100px]">
+							<option value="1">会議</option>
+							<option value="2">訪問</option>
+							<option value="3">来訪</option>
+						</select>
+						<input type="text" name="title" required
+							class="flex-grow border border-gray-300 px-3 py-1 rounded focus:ring-1 focus:ring-blue-400 outline-none"
+							placeholder="件名を入力してください">
+					</div>
+				</div>
+
+				<div class="grid grid-cols-[140px_1fr] border-b border-gray-100 pb-4">
+					<label class="font-bold text-right pr-8 pt-1 text-gray-600">メモ</label>
+					<textarea name="description" rows="5"
+						class="w-full border border-gray-300 px-3 py-2 rounded focus:ring-1 focus:ring-blue-400 outline-none"
+						placeholder="詳細なメモを入力できます"></textarea>
+				</div>
+
+				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
+					<label class="font-bold text-right pr-8 text-gray-600">公開設定</label>
+					<div class="flex items-center space-x-6">
+						<label class="flex items-center cursor-pointer">
+							<input type="radio" name="visibilityType" value="0" checked
+								class="w-4 h-4 text-blue-600 mr-2"> 公開
+						</label>
+						<label class="flex items-center cursor-pointer">
+							<input type="radio" name="visibilityType" value="1" class="w-4 h-4 text-blue-600 mr-2"> 非公開
+						</label>
+					</div>
+				</div>
+
+				<div class="bg-[#e9eff3] -mx-8 -mb-8 p-5 flex justify-center space-x-4 border-t border-gray-300 mt-8">
+					<button type="submit"
+						class="bg-[#4a8cd1] hover:bg-[#3b7bbd] text-white font-bold py-1.5 px-10 rounded shadow-sm border-b-2 border-[#2e6296] active:translate-y-0.5 transition-all">
+						登録する
+					</button>
+					<a th:href="@{/menu}"
+						class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-1.5 px-10 rounded border border-gray-300 shadow-sm active:translate-y-0.5 transition-all text-center">
+						キャンセル
+					</a>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+
+</html>

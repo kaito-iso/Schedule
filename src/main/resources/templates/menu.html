@@ -17,15 +17,24 @@
 				<div class="text-lg font-medium">
 					<p th:text="${today}">今日の日付</p>
 				</div>
-				<div class="flex border border-gray-300 rounded text-sm">
-					<a th:href="@{/menu(date=${prevWeek})}"
-						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前週</a>
-					<a th:href="@{/menu(date=${prevDay})}"
-						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">前日</a>
-					<a th:href="@{/menu}" class="px-3 py-1 border-r border-gray-300 bg-gray-50 font-bold">今日</a>
-					<a th:href="@{/menu(date=${nextDay})}"
-						class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100">翌日</a>
-					<a th:href="@{/menu(date=${nextWeek})}" class="px-3 py-1 hover:bg-gray-100">翌週</a>
+
+				<div class="flex items-center space-x-4">
+					<a th:href="@{/menu/create}"
+						class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors">
+						+ 予定を登録
+					</a>
+
+					<div class="flex border border-gray-300 rounded text-sm bg-white">
+						<a th:href="@{/menu(date=${prevWeek})}"
+							class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100 text-gray-700">前週</a>
+						<a th:href="@{/menu(date=${prevDay})}"
+							class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100 text-gray-700">前日</a>
+						<a th:href="@{/menu}"
+							class="px-3 py-1 border-r border-gray-300 bg-gray-50 font-bold text-gray-900">今日</a>
+						<a th:href="@{/menu(date=${nextDay})}"
+							class="px-3 py-1 border-r border-gray-300 hover:bg-gray-100 text-gray-700">翌日</a>
+						<a th:href="@{/menu(date=${nextWeek})}" class="px-3 py-1 hover:bg-gray-100 text-gray-700">翌週</a>
+					</div>
 				</div>
 			</div>
 
@@ -48,10 +57,11 @@
 					<div class="p-2 flex-grow text-xs text-center">
 					</div>
 
-					<div class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer hover:bg-opacity-50 text-center"
+					<a th:href="@{/menu/create(date=${day})}"
+						class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer block text-center transition-colors"
 						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'hover:bg-blue-100' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'hover:bg-red-100' : 'hover:bg-gray-50')}">
 						+
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>
