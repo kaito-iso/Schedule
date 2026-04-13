@@ -109,11 +109,11 @@ INSERT INTO m_job_title(job_title_code,job_title_name,display_order,is_active,ad
 VALUES ('900','一般社員',3,true,'2025-01-01 12:00:00','admin');
 
 INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
-VALUES('KAIGI','会議','#1e90ff',1,true,'2026-04-01 12:00:00','admin');
+VALUES('KAIGI','会議','#dcedff',1,true,'2026-04-01 12:00:00','admin');
 INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
-VALUES('RAIHO','来訪','#00ff7f',2,true,'2026-04-01 12:00:00','admin');
+VALUES('RAIHO','来訪','#d6ffd9',2,true,'2026-04-01 12:00:00','admin');
 INSERT INTO m_schedule_category(category_code,category_name,category_color,display_order,is_active,add_date,add_code)
-VALUES('SYTYO','出張','#ffb6c1',3,true,'2026-04-01 12:00:00','admin');
+VALUES('SYTYO','出張','#ffe4e8',3,true,'2026-04-01 12:00:00','admin');
 
 INSERT INTO m_year("year",era_name,era_year,is_active)
 VALUES(2026,'令和',8,true);

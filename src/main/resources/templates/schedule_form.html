@@ -14,6 +14,16 @@
 			background-size: 1em;
 			padding-right: 1.2rem !important;
 		}
+
+		#categoryMenu::-webkit-scrollbar {
+			width: 12px;
+		}
+
+		#categoryMenu::-webkit-scrollbar-thumb {
+			background-color: #a0a0a0;
+			border-radius: 10px;
+			border: 3px solid white;
+		}
 	</style>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
@@ -23,38 +33,33 @@
 			const categoryCodeInput = document.getElementById('categoryCodeInput');
 			const categoryOptions = document.querySelectorAll('.category-option');
 
-			// ドロップダウンの開閉
-			categoryLabelBtn.addEventListener('click', function () {
+			// カテゴリードロップダウンの開閉
+			categoryLabelBtn.addEventListener('click', function (e) {
+				e.stopPropagation();
 				categoryMenu.classList.toggle('hidden');
 			});
 
-			// 項目選択時の処理
+			// カテゴリー選択処理
 			categoryOptions.forEach(option => {
-				option.addEventListener('click', function () {
+				option.addEventListener('click', function (e) {
+					e.stopPropagation();
 					const code = this.getAttribute('data-code');
 					const name = this.getAttribute('data-name');
-					const color = this.getAttribute('data-color');
-
-					// 1. 表示されているラベルを更新
 					selectedCategoryLabel.textContent = name;
-					selectedCategoryLabel.style.backgroundColor = color;
-
-					// 2. 隠しフィールドの値を更新（POSTされるデータ）
+					categoryLabelBtn.style.backgroundColor = "#ffffff";
 					categoryCodeInput.value = code;
-
-					// 3. メニューを閉じる
 					categoryMenu.classList.add('hidden');
 				});
 			});
 
-			// メニュー以外をクリックした時に閉じる処理
+			// メニュー外クリックで閉じる
 			document.addEventListener('click', function (event) {
 				if (!categoryLabelBtn.contains(event.target)) {
 					categoryMenu.classList.add('hidden');
 				}
 			});
 
-			// --- 既存の年月日と終日の制御コードがここに入る ---
+			// --- 年月日の動的制御 ---
 			const yearSelect = document.querySelector('select[name="year"]');
 			const monthSelect = document.querySelector('select[name="month"]');
 			const daySelect = document.querySelector('select[name="day"]');
@@ -63,42 +68,21 @@
 				const year = parseInt(yearSelect.value);
 				const month = parseInt(monthSelect.value);
 				const selectedDay = parseInt(daySelect.value);
-
 				const lastDay = new Date(year, month, 0).getDate();
 
 				daySelect.innerHTML = '';
-
 				for (let d = 1; d <= lastDay; d++) {
 					const option = document.createElement('option');
 					option.value = d;
 					option.textContent = d;
-					if (d === selectedDay) {
-						option.selected = true;
-					} else if (selectedDay > lastDay && d === lastDay) {
-						option.selected = true;
-					}
+					if (d === selectedDay) option.selected = true;
+					else if (selectedDay > lastDay && d === lastDay) option.selected = true;
 					daySelect.appendChild(option);
 				}
 			}
 			yearSelect.addEventListener('change', updateDays);
 			monthSelect.addEventListener('change', updateDays);
-
 			updateDays();
-
-			const allDayCheck = document.getElementById('isAllDay');
-			const timeSelects = document.querySelectorAll('#time-select-group select');
-
-			allDayCheck.addEventListener('change', function () {
-				timeSelects.forEach(select => {
-					select.disabled = this.checked;
-					// 無効化されていることが視覚的にわかるようにスタイル調整
-					if (this.checked) {
-						select.classList.add('bg-gray-100', 'text-gray-400');
-					} else {
-						select.classList.remove('bg-gray-100', 'text-gray-400');
-					}
-				});
-			});
 		});
 	</script>
 </head>
@@ -117,9 +101,7 @@
 		</div>
 
 		<div class="bg-white border border-gray-300 shadow-sm">
-			<div class="bg-[#7fb1e3] text-white px-4 py-1.5 font-bold shadow-inner text-base">
-				予定の登録
-			</div>
+			<div class="bg-[#7fb1e3] text-white px-4 py-1.5 font-bold shadow-inner text-base">予定の登録</div>
 
 			<form th:action="@{/menu/create}" method="post" class="p-8 space-y-4 text-sm text-[#333]">
 
@@ -129,7 +111,7 @@
 						<select name="year"
 							class="border border-gray-300 px-2 py-1 rounded bg-white hover:border-gray-400">
 							<option th:each="y : ${years}" th:value="${y.year}" th:text="${y.year}"
-								th:selected="${y.year == selectedDate.year}"> </option>
+								th:selected="${y.year == selectedDate.year}"></option>
 						</select>
 						<span class="pr-2">年</span>
 						<select name="month"
@@ -138,15 +120,12 @@
 								th:selected="${m == selectedDate.monthValue}"></option>
 						</select>
 						<span class="pr-2">月</span>
-
 						<select name="day"
 							class="border border-gray-300 px-2 py-1 rounded bg-white hover:border-gray-400">
 							<option th:each="d : ${daysInMonth}" th:value="${d}" th:text="${d}"
 								th:selected="${d == selectedDate.dayOfMonth}"></option>
 						</select>
 						<span class="pr-2">日</span>
-
-						<span class="text-blue-600 hover:underline cursor-pointer text-xs ml-4">複数の日付を指定する</span>
 					</div>
 				</div>
 
@@ -154,51 +133,43 @@
 					<label class="font-bold text-right pr-8 text-gray-600">時刻</label>
 					<div class="flex items-center">
 						<div id="time-select-group" class="flex items-center">
-							<select name="startHour" class="border border-gray-300 px-2 py-1 rounded">
-								<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"
-									th:selected="${h == 9}"></option>
+							<select name="startHour" class="border border-gray-300 px-2 py-1 rounded bg-white">
+								<option value="">--</option>
+								<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}">
+								</option>
 							</select>
 							<span class="px-1">時</span>
-							<select name="startMinute" class="border border-gray-300 px-2 py-1 rounded">
+							<select name="startMinute" class="border border-gray-300 px-2 py-1 rounded bg-white">
+								<option value="">--</option>
 								<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
 							</select>
 							<span class="px-1">分</span>
 
 							<span class="px-4 text-gray-400">〜</span>
 
-							<select name="endHour" class="border border-gray-300 px-2 py-1 rounded">
-								<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"
-									th:selected="${h == 10}"></option>
+							<select name="endHour" class="border border-gray-300 px-2 py-1 rounded bg-white">
+								<option value="">--</option>
+								<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}">
+								</option>
 							</select>
 							<span class="px-1">時</span>
-							<select name="endMinute" class="border border-gray-300 px-2 py-1 rounded">
+							<select name="endMinute" class="border border-gray-300 px-2 py-1 rounded bg-white">
+								<option value="">--</option>
 								<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
 							</select>
 							<span class="px-1">分</span>
 						</div>
-
-						<label class="ml-6 flex items-center cursor-pointer text-blue-600 font-bold">
-							<input type="checkbox" name="isAllDay" id="isAllDay" class="w-4 h-4 mr-1"> 終日
-						</label>
 					</div>
 				</div>
 
 				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
 					<label class="font-bold text-right pr-8 text-gray-600">予定</label>
 					<div class="flex space-x-2 relative">
-
-						<div class="relative min-w-[120px]">
+						<div class="relative min-w-[140px]">
 							<button type="button" id="categoryLabelBtn"
-								class="w-full flex items-center justify-between rounded border border-gray-300 bg-white px-3 py-1 text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400">
-
-								<span id="selectedCategoryLabel"
-									class="inline-flex items-center rounded px-2 py-0.5 text-xs font-bold text-gray-900 shadow-sm"
-									th:style="|background-color: ${categorys[0].categoryColor};|"
-									th:text="${categorys[0].categoryName}">
-									カテゴリー
-								</span>
-
-								<svg class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+								class="w-full flex items-center justify-between border border-gray-300 bg-white px-2 py-1 text-sm shadow-sm focus:outline-none">
+								<span id="selectedCategoryLabel" class="font-medium text-gray-900">--</span>
+								<svg class="h-4 w-4 text-gray-600 ml-2" viewBox="0 0 20 20" fill="currentColor">
 									<path fill-rule="evenodd"
 										d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
 										clip-rule="evenodd" />
@@ -206,29 +177,24 @@
 							</button>
 
 							<div id="categoryMenu"
-								class="absolute z-10 mt-1 hidden w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+								class="absolute z-10 mt-0.5 hidden w-full max-h-80 overflow-y-auto border border-gray-400 bg-white shadow-md focus:outline-none"
 								role="menu">
-								<div class="py-1" role="none">
+								<div class="py-0" role="none">
+									<button type="button"
+										class="category-option flex w-full items-center px-2 py-1 text-sm bg-white hover:brightness-90 border-b border-gray-100"
+										data-code="" data-name="--">--</button>
 									<button type="button" th:each="cat : ${categorys}"
-										class="category-option flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										class="category-option flex w-full items-center px-2 py-1 text-sm font-medium text-gray-800 hover:brightness-95 border-b border-gray-100"
 										th:data-code="${cat.categoryCode}" th:data-name="${cat.categoryName}"
-										th:data-color="${cat.categoryColor}">
-
-										<span
-											class="inline-flex items-center rounded px-2 py-0.5 text-xs font-bold text-gray-900 shadow-sm"
-											th:style="|background-color: ${cat.categoryColor};|"
-											th:text="${cat.categoryName}">
-										</span>
+										th:style="|background-color: ${cat.categoryColor};|">
+										<span th:text="${cat.categoryName}"></span>
 									</button>
 								</div>
 							</div>
 						</div>
-
-						<input type="hidden" name="categoryCode" id="categoryCodeInput"
-							th:value="${categorys[0].categoryCode}">
-
+						<input type="hidden" name="categoryCode" id="categoryCodeInput" value="">
 						<input type="text" name="title" required
-							class="flex-grow border border-gray-300 px-3 py-1 rounded focus:ring-1 focus:ring-blue-400 outline-none"
+							class="flex-grow border border-gray-300 px-3 py-1 rounded-sm focus:border-blue-500 outline-none"
 							placeholder="件名を入力してください">
 					</div>
 				</div>
@@ -240,28 +206,11 @@
 						placeholder="詳細なメモを入力できます"></textarea>
 				</div>
 
-				<div class="grid grid-cols-[140px_1fr] items-center border-b border-gray-100 pb-4">
-					<label class="font-bold text-right pr-8 text-gray-600">公開設定</label>
-					<div class="flex items-center space-x-6">
-						<label class="flex items-center cursor-pointer">
-							<input type="radio" name="visibilityType" value="0" checked
-								class="w-4 h-4 text-blue-600 mr-2"> 公開
-						</label>
-						<label class="flex items-center cursor-pointer">
-							<input type="radio" name="visibilityType" value="1" class="w-4 h-4 text-blue-600 mr-2"> 非公開
-						</label>
-					</div>
-				</div>
-
 				<div class="bg-[#e9eff3] -mx-8 -mb-8 p-5 flex justify-center space-x-4 border-t border-gray-300 mt-8">
 					<button type="submit"
-						class="bg-[#4a8cd1] hover:bg-[#3b7bbd] text-white font-bold py-1.5 px-10 rounded shadow-sm border-b-2 border-[#2e6296] active:translate-y-0.5 transition-all">
-						登録する
-					</button>
+						class="bg-[#4a8cd1] hover:bg-[#3b7bbd] text-white font-bold py-1.5 px-10 rounded shadow-sm border-b-2 border-[#2e6296] active:translate-y-0.5 transition-all">登録する</button>
 					<a th:href="@{/menu}"
-						class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-1.5 px-10 rounded border border-gray-300 shadow-sm active:translate-y-0.5 transition-all text-center">
-						キャンセル
-					</a>
+						class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-1.5 px-10 rounded border border-gray-300 shadow-sm active:translate-y-0.5 transition-all text-center">キャンセル</a>
 				</div>
 			</form>
 		</div>
