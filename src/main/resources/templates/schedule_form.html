@@ -31,6 +31,7 @@
 	</style>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
+			// カテゴリ選択ロジック
 			const categoryLabelBtn = document.getElementById('categoryLabelBtn');
 			const categoryMenu = document.getElementById('categoryMenu');
 			const selectedCategoryLabel = document.getElementById('selectedCategoryLabel');
@@ -48,24 +49,40 @@
 			});
 			document.addEventListener('click', () => categoryMenu.classList.add('hidden'));
 
-			const yearSelect = document.querySelector('select[name="year"]');
-			const monthSelect = document.querySelector('select[name="month"]');
-			const daySelect = document.querySelector('select[name="day"]');
+			// 日付連動ロジック
+			const startYear = document.querySelector('select[name="startYear"]');
+			const startMonth = document.querySelector('select[name="startMonth"]');
+			const startDay = document.querySelector('select[name="startDay"]');
 
-			function updateDays() {
-				const year = parseInt(yearSelect.value), month = parseInt(monthSelect.value), selectedDay = parseInt(daySelect.value);
+			const endYearHidden = document.getElementById('endYearHidden');
+			const endMonthHidden = document.getElementById('endMonthHidden');
+			const endDayHidden = document.getElementById('endDayHidden');
+
+			function syncEndDates() {
+				// 開始日の選択肢を更新
+				const year = parseInt(startYear.value), month = parseInt(startMonth.value), selectedDay = parseInt(startDay.value);
 				const lastDay = new Date(year, month, 0).getDate();
-				daySelect.innerHTML = '';
+
+				startDay.innerHTML = '';
 				for (let d = 1; d <= lastDay; d++) {
 					const option = document.createElement('option');
 					option.value = d; option.textContent = d;
 					if (d === selectedDay) option.selected = true;
-					daySelect.appendChild(option);
+					startDay.appendChild(option);
 				}
+
+				// 終了日用のHiddenフィールドに値を同期（Formクラス使い回し用）
+				endYearHidden.value = startYear.value;
+				endMonthHidden.value = startMonth.value;
+				endDayHidden.value = startDay.value;
 			}
-			yearSelect.addEventListener('change', updateDays);
-			monthSelect.addEventListener('change', updateDays);
-			updateDays();
+
+			startYear.addEventListener('change', syncEndDates);
+			startMonth.addEventListener('change', syncEndDates);
+			startDay.addEventListener('change', syncEndDates);
+
+			// 初期化
+			syncEndDates();
 		});
 	</script>
 </head>
@@ -86,18 +103,23 @@
 			<div class="bg-[#7fb1e3] text-white px-5 py-2 font-bold text-base shadow-inner">予定の登録</div>
 
 			<form th:action="@{/menu/create}" method="post" class="p-8 space-y-4 pb-0">
+
+				<input type="hidden" name="endYear" id="endYearHidden">
+				<input type="hidden" name="endMonth" id="endMonthHidden">
+				<input type="hidden" name="endDay" id="endDayHidden">
+
 				<div class="grid grid-cols-[120px_1fr] items-center border-b border-gray-100 pb-3">
 					<label class="font-bold text-right pr-8 text-gray-600">日付</label>
 					<div class="flex items-center space-x-1">
-						<select name="year" class="border border-gray-300 px-2 py-1 rounded bg-white">
+						<select name="startYear" class="border border-gray-300 px-2 py-1 rounded bg-white">
 							<option th:each="y : ${years}" th:value="${y.year}" th:text="${y.year}"
 								th:selected="${y.year == selectedDate.year}"></option>
 						</select><span>年</span>
-						<select name="month" class="border border-gray-300 px-2 py-1 rounded bg-white">
+						<select name="startMonth" class="border border-gray-300 px-2 py-1 rounded bg-white">
 							<option th:each="m : ${months}" th:value="${m}" th:text="${m}"
 								th:selected="${m == selectedDate.monthValue}"></option>
 						</select><span>月</span>
-						<select name="day" class="border border-gray-300 px-2 py-1 rounded bg-white">
+						<select name="startDay" class="border border-gray-300 px-2 py-1 rounded bg-white">
 							<option th:each="d : ${daysInMonth}" th:value="${d}" th:text="${d}"
 								th:selected="${d == selectedDate.dayOfMonth}"></option>
 						</select><span>日</span>
@@ -150,7 +172,7 @@
 							</div>
 						</div>
 						<input type="hidden" name="categoryCode" id="categoryCodeInput" value="">
-						<input type="text" name="title" required
+						<input type="text" name="title"
 							class="flex-grow border border-gray-300 px-4 py-1.5 outline-none focus:border-blue-500 rounded-sm"
 							placeholder="件名を入力してください">
 					</div>
@@ -165,7 +187,7 @@
 
 				<div class="grid grid-cols-[120px_1fr] border-b border-gray-100 pb-3">
 					<label class="font-bold text-right pr-8 pt-2 text-gray-600">メモ</label>
-					<textarea name="description" rows="2"
+					<textarea name="content" rows="2"
 						class="w-full border border-gray-300 px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 rounded-sm"
 						placeholder="詳細なメモを入力できます"></textarea>
 				</div>
