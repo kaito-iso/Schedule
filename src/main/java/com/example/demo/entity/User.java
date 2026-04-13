@@ -107,5 +107,9 @@ public class User {
 	/** 更新者コード **/
 	@Column(name = "upd_code", length = 32)
 	private String updCode;
-
+	
+	/** 苗字 + 名前**/
+	public String getFullName() {
+        return String.format("%s %s", this.lastName, this.firstName);
+    }
 }

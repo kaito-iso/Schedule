@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +26,15 @@ public class UserService {
 	 */
 	public Optional<User> findByUser(String userId) {
 		return repository.findById(userId);
+	}
+
+	/**
+	 * ユーザーIDを受け取った人以外を取得
+	 * @param userId 検索対象外のユーザーID
+	 * @return 該当するユーザーをListで返す
+	 */
+	public List<User> otherUsers(String userId) {
+	    return repository.findByUserIdNotAndActiveTrue(userId);
 	}
 
 	/**
