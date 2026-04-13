@@ -36,6 +36,9 @@ public class ScheduleForm {
 
 	/** 終了分 **/
 	private Integer endMinute;
+	
+	/** 終日チェック **/
+	private boolean allDay;
 
 	/** スケジュールカテゴリー **/
 	private String categoryCode;

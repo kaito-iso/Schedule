@@ -10,4 +10,5 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
 
 	List<Facility> findAllByOrderByDisplayOrderAsc();
 
+	List<Facility> findByActiveOrderByDisplayOrderAsc(boolean active);
 }

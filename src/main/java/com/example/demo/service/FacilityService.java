@@ -27,6 +27,14 @@ public class FacilityService {
 	}
 
 	/**
+	 * activeが有効の施設情報を取得
+	 * @return activeが有効の施設情報のリスト
+	 */
+	public List<Facility> findByActive() {
+		return repository.findByActiveOrderByDisplayOrderAsc(true);
+	}
+
+	/**
 	 * 施設コードをキーに施設情報を取得
 	 * @param facilityCode 検索対象の施設コード
 	 * @return 該当する施設が存在する場合はそのエンティティを含むOptional、存在しない場合は空のOptional
@@ -73,12 +81,12 @@ public class FacilityService {
 			if (repository.existsById(form.getFacilityCode())) {
 				throw new RuntimeException("この施設コードは既に登録されています");
 			}
-			
+
 			facility = new Facility();
 			facility.setFacilityCode(form.getFacilityCode());
 			facility.setAddDate(LocalDateTime.now());
 			facility.setAddCode(userId);
-			
+
 		} else {
 			throw new IllegalArgumentException("無効なモードです: " + mode);
 		}
