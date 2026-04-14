@@ -91,7 +91,7 @@ public class JobTitleService {
 			jobTitle.setDisplayOrder(0);
 		}
 
-		jobTitle.setActive(form.isActive());
+		jobTitle.setActive(form.getActive());
 
 		repository.save(jobTitle);
 	}

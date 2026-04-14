@@ -26,5 +26,5 @@ public class JobTitleForm {
 	private String displayOrder;
 
 	/** 削除区分 **/
-	private boolean active;
+	private Boolean active;
 }

@@ -99,7 +99,7 @@ public class FacilityService {
 			facility.setDisplayOrder(0);
 		}
 
-		facility.setActive(form.isActive());
+		facility.setActive(form.getActive());
 
 		repository.save(facility);
 	}
