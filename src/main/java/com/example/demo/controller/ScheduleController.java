@@ -24,6 +24,7 @@ import com.example.demo.entity.User;
 import com.example.demo.form.ScheduleForm;
 import com.example.demo.service.FacilityService;
 import com.example.demo.service.ScheduleCategoryService;
+import com.example.demo.service.ScheduleService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.YearService;
 import com.example.demo.util.MinuteInterval;
@@ -36,6 +37,7 @@ public class ScheduleController {
 
 	private static final String date = "date";
 	private static final String mode = "mode";
+	private final ScheduleService service;
 	private final YearService yearService;
 	private final ScheduleCategoryService categoryService;
 	private final FacilityService facilityservice;
@@ -122,7 +124,8 @@ public class ScheduleController {
 			return reloadForm(model, user.getUsername(), mode);
 		}
 
-		System.out.println(form);
+		String userId = user.getUsername();
+		service.save(form, mode, userId);
 
 		return "redirect:/menu";
 	}
