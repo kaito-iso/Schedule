@@ -19,7 +19,7 @@
 				</div>
 
 				<div class="flex items-center space-x-4">
-					<a th:href="@{/menu/create}"
+					<a th:href="@{/schedule/create}"
 						class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors">
 						+ 予定を登録
 					</a>
@@ -57,7 +57,7 @@
 					<div class="p-2 flex-grow text-xs text-center">
 					</div>
 
-					<a th:href="@{/menu/create(date=${day})}"
+					<a th:href="@{/schedule/create(date=${day})}"
 						class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer block text-center transition-colors"
 						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'hover:bg-blue-100' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'hover:bg-red-100' : 'hover:bg-gray-50')}">
 						+

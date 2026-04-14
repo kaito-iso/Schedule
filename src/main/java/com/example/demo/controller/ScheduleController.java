@@ -4,10 +4,14 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.User;
@@ -30,7 +34,7 @@ public class ScheduleController {
 	private final FacilityService facilityservice;
 	private final UserService userService;
 
-	@GetMapping("/menu/create")
+	@GetMapping("/schedule/create")
 	public String showCreateForm(@RequestParam(name = date, required = false) String dateStr, Model model,
 			Principal principal) {
 
@@ -47,7 +51,7 @@ public class ScheduleController {
 
 		String userId = principal.getName();
 		User loginUser = userService.findByUser(userId)
-			    .orElseThrow(() -> new RuntimeException("ログインユーザーが見つかりません"));
+				.orElseThrow(() -> new RuntimeException("ログインユーザーが見つかりません"));
 
 		// Formを作成し、初期値をセット
 		ScheduleForm form = new ScheduleForm();
@@ -62,9 +66,9 @@ public class ScheduleController {
 		model.addAttribute("scheduleForm", form);
 		model.addAttribute("selectedDate", initialDate);
 		model.addAttribute("years", yearService.findAll());
-		model.addAttribute("months", java.util.stream.IntStream.rangeClosed(1, 12).boxed().toList());
-		model.addAttribute("daysInMonth", java.util.stream.IntStream.rangeClosed(1, 31).boxed().toList());
-		model.addAttribute("hours", java.util.stream.IntStream.rangeClosed(0, 23).boxed().toList());
+		model.addAttribute("months", IntStream.rangeClosed(1, 12).boxed().toList());
+		model.addAttribute("daysInMonth", IntStream.rangeClosed(1, 31).boxed().toList());
+		model.addAttribute("hours", IntStream.rangeClosed(0, 23).boxed().toList());
 		model.addAttribute("minutes", MinuteInterval.getLabels());
 		model.addAttribute("categorys", categoryService.findAll());
 		model.addAttribute("loginUser", loginUser);
@@ -72,5 +76,11 @@ public class ScheduleController {
 		model.addAttribute("facilities", facilityservice.findByActive());
 
 		return "schedule_form";
+	}
+
+	@PostMapping("/schedule/create")
+	public String saveSchedule(@Validated @ModelAttribute("scheduleForm") ScheduleForm form) {
+		System.out.println(form);
+		return "redirect:/menu";
 	}
 }

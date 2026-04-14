@@ -2,6 +2,8 @@ package com.example.demo.form;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.URL;
+
 import lombok.Data;
 
 @Data
@@ -49,7 +51,8 @@ public class ScheduleForm {
 	/** 内容 **/
 	private String content;
 
-	/** 会議URL **/
+	/** URL **/
+	@URL(message = "有効なURL形式で入力してください")
 	private String meetingUrl;
 
 	/** 参加者 **/

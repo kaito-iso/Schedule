@@ -23,38 +23,27 @@
 		.time-select:disabled {
 			background-color: #f3f4f6 !important;
 			color: #9ca3af !important;
-			border-color: #d1d5db !important;
 			cursor: not-allowed;
 			opacity: 0.7;
-		}
-
-		#categoryMenu::-webkit-scrollbar {
-			width: 8px;
-		}
-
-		#categoryMenu::-webkit-scrollbar-thumb {
-			background-color: #ccc;
-			border-radius: 4px;
 		}
 	</style>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			// --- フォーム要素の取得 ---
 			const form = document.querySelector('form');
 			const selectedUsers = document.getElementById('selectedUsers');
 			const availableUsers = document.getElementById('availableUsers');
 			const selectedFacilities = document.getElementById('selectedFacilities');
 			const availableFacilities = document.getElementById('availableFacilities');
+			const currentUserId = document.getElementById('currentUserId').value;
 
 			// --- カテゴリ選択 ---
 			const categoryLabelBtn = document.getElementById('categoryLabelBtn');
 			const categoryMenu = document.getElementById('categoryMenu');
 			const selectedCategoryLabel = document.getElementById('selectedCategoryLabel');
 			const categoryCodeInput = document.getElementById('categoryCodeInput');
-			const categoryOptions = document.querySelectorAll('.category-option');
 
 			categoryLabelBtn.addEventListener('click', (e) => {e.stopPropagation(); categoryMenu.classList.toggle('hidden');});
-			categoryOptions.forEach(option => {
+			document.querySelectorAll('.category-option').forEach(option => {
 				option.addEventListener('click', function (e) {
 					e.stopPropagation();
 					selectedCategoryLabel.textContent = this.getAttribute('data-name');
@@ -75,13 +64,17 @@
 			function syncEndDates() {
 				const year = parseInt(startYear.value), month = parseInt(startMonth.value), selectedDay = parseInt(startDay.value);
 				const lastDay = new Date(year, month, 0).getDate();
+
+				// 開始日のドロップダウンを動的に更新
+				const currentVal = parseInt(startDay.value);
 				startDay.innerHTML = '';
 				for (let d = 1; d <= lastDay; d++) {
 					const option = document.createElement('option');
 					option.value = d; option.textContent = d;
-					if (d === (selectedDay > lastDay ? lastDay : selectedDay)) option.selected = true;
+					if (d === (currentVal > lastDay ? lastDay : currentVal)) option.selected = true;
 					startDay.appendChild(option);
 				}
+				// 隠しフィールドの終了日に同期
 				endYearHidden.value = startYear.value;
 				endMonthHidden.value = startMonth.value;
 				endDayHidden.value = startDay.value;
@@ -96,9 +89,7 @@
 			});
 			document.getElementById('removeUserBtn').addEventListener('click', () => {
 				Array.from(selectedUsers.selectedOptions).forEach(opt => {
-					if (opt.value !== "[[${loginUser.userId}]]") { // ログインユーザーは削除させない場合はこの判定
-						availableUsers.appendChild(opt);
-					}
+					if (opt.value !== currentUserId) availableUsers.appendChild(opt);
 				});
 			});
 
@@ -120,13 +111,12 @@
 				});
 			});
 
-			// --- 送信前処理（リストを全選択状態にする） ---
+			// --- 送信前処理 ---
 			form.addEventListener('submit', function () {
+				syncEndDates();
+				// 複数選択の値を送信するため、全要素を選択状態にする
 				Array.from(selectedUsers.options).forEach(opt => opt.selected = true);
-				selectedUsers.setAttribute('name', 'users');
-
 				Array.from(selectedFacilities.options).forEach(opt => opt.selected = true);
-				selectedFacilities.setAttribute('name', 'facilities');
 			});
 
 			syncEndDates();
@@ -136,30 +126,27 @@
 
 <body class="bg-[#f0f4f7] font-sans text-[#333] text-sm">
 	<div th:replace="~{common/layout :: header}"></div>
-
-	<main class="max-w-6xl mx-auto pt-2 pb-0 px-6">
+	<main class="max-w-6xl mx-auto pt-2 pb-10 px-6">
 		<div class="bg-white border border-gray-300 shadow-md">
 			<div class="bg-[#7fb1e3] text-white px-5 py-1.5 font-bold text-base shadow-inner">予定の登録</div>
 
-			<form th:action="@{/menu/create}" method="post" class="px-8 py-3 space-y-2 pb-0">
-				<input type="hidden" name="endYear" id="endYearHidden">
-				<input type="hidden" name="endMonth" id="endMonthHidden">
-				<input type="hidden" name="endDay" id="endDayHidden">
+			<form th:action="@{/schedule/create}" th:object="${scheduleForm}" method="post" class="px-8 py-3 space-y-2">
+				<input type="hidden" th:field="*{endYear}" id="endYearHidden">
+				<input type="hidden" th:field="*{endMonth}" id="endMonthHidden">
+				<input type="hidden" th:field="*{endDay}" id="endDayHidden">
+				<input type="hidden" id="currentUserId" th:value="${loginUser?.userId}">
 
 				<div class="grid grid-cols-[110px_1fr] items-center border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 text-gray-600">日付</label>
 					<div class="flex items-center space-x-1">
-						<select name="startYear" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
-							<option th:each="y : ${years}" th:value="${y.year}" th:text="${y.year}"
-								th:selected="${y.year == selectedDate.year}"></option>
+						<select th:field="*{startYear}" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
+							<option th:each="y : ${years}" th:value="${y.year}" th:text="${y.year}"></option>
 						</select><span>年</span>
-						<select name="startMonth" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
-							<option th:each="m : ${months}" th:value="${m}" th:text="${m}"
-								th:selected="${m == selectedDate.monthValue}"></option>
+						<select th:field="*{startMonth}" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
+							<option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
 						</select><span>月</span>
-						<select name="startDay" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
-							<option th:each="d : ${daysInMonth}" th:value="${d}" th:text="${d}"
-								th:selected="${d == selectedDate.dayOfMonth}"></option>
+						<select th:field="*{startDay}" class="border border-gray-300 px-2 py-0.5 rounded bg-white">
+							<option th:each="d : ${daysInMonth}" th:value="${d}" th:text="${d}"></option>
 						</select><span>日</span>
 					</div>
 				</div>
@@ -167,27 +154,28 @@
 				<div class="grid grid-cols-[110px_1fr] items-center border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 text-gray-600">時刻</label>
 					<div class="flex items-center space-x-1">
-						<select name="startHour"
+						<select th:field="*{startHour}"
 							class="time-select border border-gray-300 px-2 py-0.5 rounded bg-white">
 							<option value="">--</option>
 							<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"></option>
 						</select><span>時</span>
-						<select name="startMinute"
+						<select th:field="*{startMinute}"
 							class="time-select border border-gray-300 px-2 py-0.5 rounded bg-white">
 							<option value="">--</option>
 							<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
 						</select><span class="px-3 text-gray-400">〜</span>
-						<select name="endHour" class="time-select border border-gray-300 px-2 py-0.5 rounded bg-white">
+						<select th:field="*{endHour}"
+							class="time-select border border-gray-300 px-2 py-0.5 rounded bg-white">
 							<option value="">--</option>
 							<option th:each="h : ${hours}" th:value="${h}" th:text="${h < 10 ? '0' + h : h}"></option>
 						</select><span>時</span>
-						<select name="endMinute"
+						<select th:field="*{endMinute}"
 							class="time-select border border-gray-300 px-2 py-0.5 rounded bg-white">
 							<option value="">--</option>
 							<option th:each="min : ${minutes}" th:value="${min}" th:text="${min}"></option>
 						</select><span>分</span>
 						<label class="ml-4 flex items-center cursor-pointer text-gray-600 text-xs">
-							<input type="checkbox" name="allDay" id="allDayTick" class="mr-1 w-3.5 h-3.5">
+							<input type="checkbox" th:field="*{allDay}" id="allDayTick" class="mr-1 w-3.5 h-3.5">
 							<span>終日</span>
 						</label>
 					</div>
@@ -216,8 +204,8 @@
 								</div>
 							</div>
 						</div>
-						<input type="hidden" name="categoryCode" id="categoryCodeInput">
-						<input type="text" name="title"
+						<input type="hidden" th:field="*{categoryCode}" id="categoryCodeInput">
+						<input type="text" th:field="*{title}"
 							class="flex-grow border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
 							placeholder="件名を入力してください">
 					</div>
@@ -225,14 +213,18 @@
 
 				<div class="grid grid-cols-[110px_1fr] items-center border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 text-gray-600">会議URL</label>
-					<input type="url" name="meetingUrl"
-						class="w-full border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
-						placeholder="https://example.com/meeting">
+					<div class="flex-grow">
+						<input type="text" th:field="*{meetingUrl}"
+							class="w-full border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
+							placeholder="https://example.com/meeting">
+						<p th:if="${#fields.hasErrors('meetingUrl')}" th:errors="*{meetingUrl}"
+							class="text-red-500 text-xs mt-1"></p>
+					</div>
 				</div>
 
 				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 pt-1 text-gray-600">メモ</label>
-					<textarea name="content" rows="3"
+					<textarea th:field="*{content}" rows="3"
 						class="w-full border border-gray-300 px-3 py-1 outline-none focus:ring-1 focus:ring-blue-400 rounded-sm"
 						placeholder="詳細なメモを入力できます"></textarea>
 				</div>
@@ -240,19 +232,21 @@
 				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-1">
 					<label class="font-bold text-right pr-4 pt-1 text-gray-600">参加者</label>
 					<div class="flex items-center space-x-2">
-						<select id="selectedUsers" size="4" class="w-40 border border-gray-300 p-1 rounded-sm text-xs">
-							<option th:if="${loginUser != null}" th:value="${loginUser?.userId}"
-								th:text="${loginUser?.fullName}"></option>
+						<select id="selectedUsers" name="participants" size="5" multiple
+							class="w-44 border border-gray-300 p-1 rounded-sm text-xs">
+							<option th:if="${loginUser != null}" th:value="${loginUser.userId}"
+								th:text="${loginUser.fullName}" selected></option>
 						</select>
 						<div class="flex flex-col space-y-1">
 							<button type="button" id="addUserBtn"
-								class="bg-gray-50 border border-gray-300 px-2 py-0.5 text-[10px] hover:bg-white shadow-sm transition-all">←
+								class="bg-gray-100 border border-gray-300 px-2 py-1 text-[10px] hover:bg-white transition-all">←
 								追加</button>
 							<button type="button" id="removeUserBtn"
-								class="bg-gray-50 border border-gray-300 px-2 py-0.5 text-[10px] hover:bg-white shadow-sm transition-all">削除
+								class="bg-gray-100 border border-gray-300 px-2 py-1 text-[10px] hover:bg-white transition-all">削除
 								→</button>
 						</div>
-						<select id="availableUsers" size="4" class="w-40 border border-gray-300 p-1 rounded-sm text-xs">
+						<select id="availableUsers" size="5" multiple
+							class="w-44 border border-gray-300 p-1 rounded-sm text-xs">
 							<option th:each="u : ${otherUsers}" th:value="${u.userId}" th:text="${u.fullName}"></option>
 						</select>
 					</div>
@@ -261,18 +255,18 @@
 				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 pt-1 text-gray-600">施設</label>
 					<div class="flex items-center space-x-2">
-						<select id="selectedFacilities" size="4"
-							class="w-40 border border-gray-300 p-1 rounded-sm text-xs"></select>
+						<select id="selectedFacilities" name="facilities" size="5" multiple
+							class="w-44 border border-gray-300 p-1 rounded-sm text-xs"></select>
 						<div class="flex flex-col space-y-1">
 							<button type="button" id="addFacilityBtn"
-								class="bg-gray-100 border border-gray-300 px-2 py-0.5 text-[10px] hover:bg-white shadow-sm">←
+								class="bg-gray-100 border border-gray-300 px-2 py-1 text-[10px] hover:bg-white transition-all">←
 								追加</button>
 							<button type="button" id="removeFacilityBtn"
-								class="bg-gray-100 border border-gray-300 px-2 py-0.5 text-[10px] hover:bg-white shadow-sm">削除
+								class="bg-gray-100 border border-gray-300 px-2 py-1 text-[10px] hover:bg-white transition-all">削除
 								→</button>
 						</div>
-						<select id="availableFacilities" size="4"
-							class="w-40 border border-gray-300 p-1 rounded-sm text-xs">
+						<select id="availableFacilities" size="5" multiple
+							class="w-44 border border-gray-300 p-1 rounded-sm text-xs">
 							<option th:each="f : ${facilities}" th:value="${f.facilityCode}"
 								th:text="${f.facilityName}"></option>
 						</select>
@@ -282,24 +276,18 @@
 				<div class="grid grid-cols-[110px_1fr] items-center pb-4">
 					<label class="font-bold text-right pr-4 text-gray-600">公開設定</label>
 					<div class="flex items-center space-x-6">
-						<label class="flex items-center cursor-pointer group">
-							<input type="radio" th:field="${scheduleForm.public}" value="true"
-								class="mr-1.5 w-3.5 h-3.5">
-							<span class="text-xs">公開</span>
-						</label>
-						<label class="flex items-center cursor-pointer group">
-							<input type="radio" th:field="${scheduleForm.public}" value="false"
-								class="mr-1.5 w-3.5 h-3.5">
-							<span class="text-xs">非公開</span>
-						</label>
+						<label class="flex items-center cursor-pointer"><input type="radio" th:field="*{public}"
+								value="true" class="mr-1.5">公開</label>
+						<label class="flex items-center cursor-pointer"><input type="radio" th:field="*{public}"
+								value="false" class="mr-1.5">非公開</label>
 					</div>
 				</div>
 
 				<div class="bg-[#e9eff3] -mx-8 p-4 flex justify-center space-x-4 border-t border-gray-300 mt-2">
 					<button type="submit"
-						class="bg-[#4a8cd1] hover:bg-[#3b7bbd] text-white font-bold py-1.5 px-12 rounded shadow-lg transition-all text-sm">登録する</button>
+						class="bg-[#4a8cd1] hover:bg-[#3b7bbd] text-white font-bold py-1.5 px-12 rounded shadow transition-all">登録する</button>
 					<a th:href="@{/menu}"
-						class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-1.5 px-12 rounded border border-gray-300 shadow transition-all text-sm text-center">キャンセル</a>
+						class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-1.5 px-12 rounded border border-gray-300 shadow text-center">キャンセル</a>
 				</div>
 			</form>
 		</div>
