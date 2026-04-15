@@ -81,7 +81,7 @@ CREATE TABLE m_schedule_category(
 
 -- スケジュール
 CREATE TABLE t_schedule(
-	id					BIGINT		  PRIMARY KEY 
+	id					BIGINT		  PRIMARY KEY AUTO_INCREMENT
 ,	category_code		VARCHAR(5)
 ,	title				VARCHAR(100)
 ,	content				TEXT

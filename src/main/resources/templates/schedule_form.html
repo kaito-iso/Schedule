@@ -228,6 +228,20 @@
 					</div>
 				</div>
 
+				<div class="grid grid-cols-[110px_1fr] items-center border-b border-gray-100 pb-1.5">
+					<label class="font-bold text-right pr-4 text-gray-600">会議URL</label>
+					<input type="url" name="meetingUrl"
+						class="w-full border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
+						placeholder="https://example.com/meeting">
+				</div>
+
+				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-1.5">
+					<label class="font-bold text-right pr-4 pt-1 text-gray-600">メモ</label>
+					<textarea name="content" rows="3"
+						class="w-full border border-gray-300 px-3 py-1 outline-none focus:ring-1 focus:ring-blue-400 rounded-sm leading-relaxed"
+						placeholder="詳細なメモを入力できます"></textarea>
+				</div>
+
 				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-2">
 					<label class="font-bold text-right pr-4 pt-1.5 text-gray-600">参加者</label>
 					<div class="flex items-center space-x-3">
