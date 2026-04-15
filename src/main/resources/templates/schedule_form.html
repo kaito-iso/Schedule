@@ -230,9 +230,15 @@
 
 				<div class="grid grid-cols-[110px_1fr] items-center border-b border-gray-100 pb-1.5">
 					<label class="font-bold text-right pr-4 text-gray-600">会議URL</label>
-					<input type="url" name="meetingUrl"
-						class="w-full border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
-						placeholder="https://example.com/meeting">
+					<div class="space-y-1">
+						<input type="text" th:field="*{meetingUrl}"
+							class="w-full border border-gray-300 px-3 py-1 outline-none focus:border-blue-500 rounded-sm"
+							th:classappend="${#fields.hasErrors('meetingUrl')} ? 'border-red-400 bg-red-50'"
+							placeholder="https://example.com/meeting">
+
+						<p th:if="${#fields.hasErrors('meetingUrl')}" th:errors="*{meetingUrl}"
+							class="text-red-500 text-xs font-bold"></p>
+					</div>
 				</div>
 
 				<div class="grid grid-cols-[110px_1fr] border-b border-gray-100 pb-1.5">

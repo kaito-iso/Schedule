@@ -9,7 +9,6 @@
 		/* タイトルが長い場合に省略する設定 */
 		.line-clamp-1 {
 			display: -webkit-box;
-			-webkit-line-clamp: 1;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
 		}
@@ -90,10 +89,10 @@
 									<div th:if="${s.category != null}"
 										class="inline-block w-fit px-2 py-0.5 rounded-[3px] text-[10px] font-black border border-black/10 shadow-sm"
 										th:style="'background-color:' + ${s.category.categoryColor} + '; filter: saturate(3) brightness(0.8); color: #000;'"
-										th:text="${s.category.categoryName}">会議</div>
+										th:text="${s.category.categoryName}">カテゴリー</div>
 
 									<div class="text-[13px] font-bold text-gray-900 leading-tight break-all pl-0.5"
-										th:text="${s.title ?: '--'}">チームミーティング</div>
+										th:text="${s.title ?: ''}">タイトル</div>
 								</div>
 							</a>
 						</div>
