@@ -5,17 +5,26 @@
 	<meta charset="UTF-8">
 	<title>Schedule - Menu</title>
 	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		/* タイトルが長い場合に省略する設定 */
+		.line-clamp-1 {
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+	</style>
 </head>
 
 <body class="bg-gray-50">
 	<div th:replace="~{common/layout :: header}"></div>
 
-	<main class="max-w-screen-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+	<main class="w-full max-w-[95%] mx-auto py-6 px-0">
 		<div class="bg-white border border-gray-300 rounded shadow-sm overflow-hidden mb-8">
 
 			<div class="flex justify-between items-center bg-white px-4 py-2 border-b border-gray-300">
-				<div class="text-lg font-medium">
-					<p th:text="${today}">今日の日付</p>
+				<div class="w-[200px] text-lg font-medium">
+					<p th:text="${today}">2026年04月15日(水)</p>
 				</div>
 
 				<div class="flex items-center space-x-4">
@@ -38,28 +47,61 @@
 				</div>
 			</div>
 
-			<div class="grid grid-cols-8 border-collapse">
-				<div class="border-r border-gray-300 p-4 flex flex-col justify-center items-center text-center">
+			<div class="grid grid-cols-[200px_repeat(7,1fr)] border-collapse">
+
+				<div
+					class="border-r border-gray-300 p-4 flex flex-col justify-center items-center text-center bg-gray-50">
 					<div class="font-bold">
-						<p th:text="${userName}">今日の日付</p>
+						<p th:text="${userName}">ユーザー名</p>
 					</div>
-					<div class="text-sm text-gray-500">月予定</div>
+					<div class="text-sm text-gray-500">週予定</div>
 				</div>
 
-				<div th:each="day : ${days}" class="border-r border-gray-300 flex flex-col min-h-[200px]"
-					th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-50' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-50' : '')}">
+				<div th:each="day : ${days}" class="border-r border-gray-300 flex flex-col min-h-[250px] relative"
+					th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-50/30' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-50/30' : '')}">
 
 					<div class="text-center py-1 border-b border-gray-300"
-						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-200' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-200' : 'bg-gray-50')}">
-						<p th:text="${#temporals.format(day, 'dd日(E)', T(java.util.Locale).JAPANESE)}">日付</p>
+						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'bg-blue-200 text-blue-800' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'bg-red-200 text-red-800' : 'bg-gray-100 text-gray-700')}">
+						<p class="text-xs font-bold"
+							th:text="${#temporals.format(day, 'dd日(E)', T(java.util.Locale).JAPANESE)}">15日(水)</p>
 					</div>
+					<!---->
+					<div class="p-1 flex-grow space-y-1.5 overflow-y-auto max-h-[500px]">
+						<div th:each="s : ${schedules}" th:if="${s.startDate.toLocalDate().isEqual(day)}"
+							class="group relative rounded-sm transition-all duration-200 border-l-4 shadow-sm"
+							th:style="'background-color:' + ${s.category?.categoryColor ?: '#f3f4f6'} + '; border-color: rgba(0,0,0,0.1);'">
 
-					<div class="p-2 flex-grow text-xs text-center">
+							<a th:href="@{/schedule/edit/{id}(id=${s.id})}" class="block px-2.5 py-2">
+
+								<div class="flex items-center mb-1.5">
+									<span th:if="${!s.isAllDay}"
+										class="text-[12px] font-black text-gray-800 tracking-tight leading-none bg-white/40 px-1.5 py-0.5 rounded">
+										<span th:text="${#temporals.format(s.startDate, 'HH:mm')}">09:30</span>
+										<span class="mx-0.5 opacity-50">-</span>
+										<span th:text="${#temporals.format(s.endDate, 'HH:mm')}">10:30</span>
+									</span>
+									<span th:if="${s.isAllDay}"
+										class="bg-gray-500 text-white px-2 py-0.5 rounded-[2px] text-[11px] font-black shadow-sm tracking-wider">
+										終日
+									</span>
+								</div>
+
+								<div class="flex flex-col space-y-1.5">
+									<div th:if="${s.category != null}"
+										class="inline-block w-fit px-2 py-0.5 rounded-[3px] text-[10px] font-black border border-black/10 shadow-sm"
+										th:style="'background-color:' + ${s.category.categoryColor} + '; filter: saturate(3) brightness(0.8); color: #000;'"
+										th:text="${s.category.categoryName}">会議</div>
+
+									<div class="text-[13px] font-bold text-gray-900 leading-tight break-all pl-0.5"
+										th:text="${s.title ?: '--'}">チームミーティング</div>
+								</div>
+							</a>
+						</div>
 					</div>
-
+					<!---->
 					<a th:href="@{/schedule/create(date=${day})}"
-						class="p-1 border-t border-gray-100 text-gray-400 cursor-pointer block text-center transition-colors"
-						th:classappend="${day.getDayOfWeek().name() == 'SATURDAY' ? 'hover:bg-blue-100' : (day.getDayOfWeek().name() == 'SUNDAY' ? 'hover:bg-red-100' : 'hover:bg-gray-50')}">
+						class="p-1 border-t border-gray-100 text-gray-300 hover:text-blue-500 hover:bg-blue-50 cursor-pointer block text-center transition-colors text-lg"
+						title="この日に予定を追加">
 						+
 					</a>
 				</div>
@@ -67,13 +109,17 @@
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-64">
-				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700">お知らせ</h2>
-				<p class="text-sm text-gray-500 italic">ここに最新のお知らせが表示されます。</p>
+			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-48">
+				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700 flex items-center">
+					<span class="mr-2">📢</span>お知らせ
+				</h2>
+				<p class="text-sm text-gray-500 italic">最新の情報はありません。</p>
 			</div>
-			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-64">
-				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700">データグラフ</h2>
-				<p class="text-sm text-gray-500 italic">ここにグラフが表示されます。</p>
+			<div class="bg-white p-6 rounded shadow-sm border border-gray-200 h-48">
+				<h2 class="font-bold border-b pb-2 mb-4 text-gray-700 flex items-center">
+					<span class="mr-2">📊</span>稼働状況
+				</h2>
+				<p class="text-sm text-gray-500 italic">データが不足しています。</p>
 			</div>
 		</div>
 	</main>
