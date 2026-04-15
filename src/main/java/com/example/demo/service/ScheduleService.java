@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Schedule;
 import com.example.demo.form.ScheduleForm;
@@ -15,12 +16,16 @@ import lombok.RequiredArgsConstructor;
 public class ScheduleService {
 
 	private final ScheduleRepository repository;
+	private final ScheduleFacilityService scheduleFacilityService;
+	private final ScheduleParticipantService scheduleParticipantService;
 
+	@Transactional
 	public void save(ScheduleForm from, String mode, String userId) {
 
 		Schedule schedule;
 
 		if ("edit".equals(mode)) {
+
 			schedule = new Schedule();
 			/*
 			schedule = repository.findById(from.getId())
@@ -50,7 +55,25 @@ public class ScheduleService {
 		schedule.setIsPublic(from.getIsPublic());
 		schedule.setMeetingUrl(from.getMeetingUrl());
 
-		repository.save(schedule);
-	}
+		// 保存
+		Schedule savedSchedule = repository.save(schedule);
 
+		// 採番されたIDを取得
+		Integer newScheduleId = savedSchedule.getId();
+
+		if ("edit".equals(mode)) {
+
+		} else if ("create".equals(mode)) {
+
+			// 参加者を登録
+			for (String participantUserId : from.getParticipants()) {
+				scheduleParticipantService.save(newScheduleId, participantUserId);
+			}
+
+			// 施設を登録
+			for (String facilityCode : from.getFacilities()) {
+				scheduleFacilityService.save(newScheduleId, facilityCode);
+			}
+		}
+	}
 }

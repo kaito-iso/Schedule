@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.repository.ScheduleRepository;
 import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class MenuController {
 
 	private static final String date = "date";
 	private final UserService userService;
-	private final ScheduleRepository sr; // TODO 削除
 
 	@GetMapping("/menu")
 	public String menu(@RequestParam(name = date, required = false) String date, Model model, Principal principal) {
@@ -61,11 +59,8 @@ public class MenuController {
 		for (int i = 0; i < 7; i++) {
 			days.add(baseDate.plusDays(i));
 		}
-		model.addAttribute("days", days);
-		
-		// TODO 削除
-		System.out.println(sr.findAll());
-
+		model.addAttribute("days", days); 
+        
 		return "menu";
 	}
 
