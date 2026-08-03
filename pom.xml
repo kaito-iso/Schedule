@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
+		<version>4.1.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -19,7 +19,7 @@
 	<!-- プロジェクト識別情報 -->
 	<groupId>com.example</groupId> <!-- gorupId:パッケージのベース -->
 	<artifactId>Schedule</artifactId> <!-- artifactId:プロジェクト名-->
-	<version>0.0.1-SNAPSHOT</version> <!-- version:バージョン-->
+	<version>1</version> <!-- version:バージョン-->
 
 	<!-- メタ情報 -->
 	<name>Schedule</name>
